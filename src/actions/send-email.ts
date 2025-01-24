@@ -11,7 +11,7 @@ export async function sendEmail(formData: FormData) {
 
   try {
     await resend.emails.send({
-      from: "Portfolio Form <portfolio.matovu-farid.com>",
+      from: "Portfolio Form <farid@portfolio.matovu-farid.com>",
       to: process.env.EMAIL_ADDRESS as string, // Replace with your email
       subject: "Portfolio Form Submission",
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
