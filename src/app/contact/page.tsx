@@ -1,20 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { sendEmail } from "@/actions/send-email"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { sendEmail } from "@/actions/send-email";
 
 export default function Contact() {
-  const [formStatus, setFormStatus] = useState<{ success?: boolean; message?: string } | null>(null)
+  const [formStatus, setFormStatus] = useState<{
+    success?: boolean;
+    message?: string;
+  } | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const result = await sendEmail(formData)
-    setFormStatus(result)
-  }
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const result = await sendEmail(formData);
+    setFormStatus(result);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -36,7 +39,10 @@ export default function Contact() {
           onSubmit={handleSubmit}
         >
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               Name
             </label>
             <input
@@ -48,7 +54,10 @@ export default function Contact() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               Email
             </label>
             <input
@@ -60,7 +69,10 @@ export default function Contact() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label
+              htmlFor="message"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               Message
             </label>
             <textarea
@@ -75,7 +87,7 @@ export default function Contact() {
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+            className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
           >
             Send Message
           </motion.button>
@@ -86,7 +98,9 @@ export default function Contact() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             className={`mt-4 p-4 rounded-md ${
-              formStatus.success ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+              formStatus.success
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
             }`}
           >
             {formStatus.message}
@@ -95,6 +109,5 @@ export default function Contact() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }
-
