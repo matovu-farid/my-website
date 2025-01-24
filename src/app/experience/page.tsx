@@ -5,22 +5,31 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ExperienceCard from "@/components/experience-card";
 
+
 const experiences = [
   {
     id: 1,
-    company: "Tech Innovators Inc.",
-    position: "Senior Frontend Developer",
-    period: "Jan 2020 - Present",
+    company: "Dabble Lab",
+    position: "Full Stack Developer",
+    period: "Oct 2022 - Present",
     description:
-      "Leading the frontend development team in creating cutting-edge web applications.",
+      "Built platforms like DialogCast (podcasting from group chat conversations) and Coverage in a Click (automotive warranty services) with integrations like OpenAI, Telegram, Discord, CRMs, and Stripe.",
   },
   {
     id: 2,
-    company: "Digital Solutions LLC",
-    position: "Full Stack Developer",
-    period: "Jun 2017 - Dec 2019",
+    company: "Microverse",
+    position: "Frontend Engineer",
+    period: "2022 - 2022",
     description:
-      "Developed and maintained various web applications using React, Node.js, and PostgreSQL.",
+      "Collaborated internationally to build full-stack applications, focusing on React, Node.js, and PostgreSQL while emphasizing test-driven development and modular architectures.",
+  },
+  {
+    id: 3,
+    company: "Sustainable and Greener World",
+    position: "Developer",
+    period: "Jan 2020 - Jan 2021",
+    description:
+      "Contributed to the Kula-Safi Project, integrating AI to predict crop shelf life, connecting farmers to markets, and improving food supply chain resilience.",
   },
 ];
 

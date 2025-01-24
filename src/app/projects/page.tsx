@@ -4,19 +4,24 @@ import { motion } from "framer-motion";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ProjectCard from "@/components/project-card";
-
 const professionalProjects = [
   {
     id: 1,
-    title: "E-commerce Platform",
+    title: "DialogCast",
     description:
-      "A full-featured online shopping platform built with React and Node.js.",
+      "A platform converting group chat conversations into podcast episodes using OpenAI text-to-speech processing.",
   },
   {
     id: 2,
-    title: "CRM System",
+    title: "Coverage in a Click",
     description:
-      "A customer relationship management system developed for a major corporation.",
+      "A scalable platform for automotive warranty services with CRM integration, Stripe payments, and automated email campaigns.",
+  },
+  {
+    id: 3,
+    title: "Kula-Safi Project",
+    description:
+      "An AI-powered smartphone app connecting smallholder farmers to local markets while predicting crop shelf life.",
   },
 ];
 
