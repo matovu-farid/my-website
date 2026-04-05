@@ -1,6 +1,8 @@
-// src/data/projects.ts
-
-export type Category = "ai-automation" | "cross-platform" | "web-apps" | "dev-tools";
+export type Category =
+  | "ai-automation"
+  | "cross-platform"
+  | "web-apps"
+  | "dev-tools";
 
 export interface Project {
   id: string;
@@ -14,6 +16,9 @@ export interface Project {
   imageUrl?: string;
   rank: number;
   featured: boolean;
+  narrative?: string;
+  keyDecisions?: string[];
+  year?: string;
 }
 
 export const CATEGORY_LABELS: Record<Category, string> = {
@@ -32,12 +37,21 @@ export const projects: Project[] = [
     longDescription:
       "A cross-platform book reader featuring library management, reading progress tracking, TTS with background generation queue, themes, keyboard/touch navigation, and PDF dual-page viewing. Built as a monorepo with Tauri for native desktop performance across macOS, Windows, and Linux.",
     category: "cross-platform",
-    technologies: ["Tauri", "TypeScript", "Bun", "TTS", "Monorepo"],
+    technologies: ["Tauri", "TypeScript", "Rust", "Bun", "TTS", "Monorepo"],
     githubUrl: "https://github.com/matovu-farid/rishi-monorepo",
     imageUrl:
       "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/screenshots/library.png",
     rank: 1,
     featured: true,
+    year: "2025",
+    narrative:
+      "I wanted a book reader that worked everywhere — desktop, web, and eventually mobile — with text-to-speech that didn't require an internet connection for every page. So I built Rishi as a monorepo with Tauri for native performance and a Rust worker for background audio generation.",
+    keyDecisions: [
+      "Chose Tauri over Electron for 10x smaller binaries and native Rust backend integration",
+      "Monorepo structure shares core reading logic across desktop, web, and mobile targets",
+      "Background TTS queue prevents UI blocking during audio generation",
+      "Dual-page PDF viewing mode for desktop-sized screens",
+    ],
   },
   {
     id: "maria",
@@ -47,9 +61,25 @@ export const projects: Project[] = [
     longDescription:
       "A sophisticated crypto trading bot built with TypeScript and Effect.js for Binance Futures. Features multiple trading strategies, Spearman noise validation, Kelly criterion position sizing, strategy parameter optimization via grid search, and automated Docker Swarm deployment with Prisma/PostgreSQL state management.",
     category: "ai-automation",
-    technologies: ["TypeScript", "Effect.js", "Docker", "Prisma", "PostgreSQL", "Binance API"],
+    technologies: [
+      "TypeScript",
+      "Effect.js",
+      "Docker",
+      "Prisma",
+      "PostgreSQL",
+      "Binance API",
+    ],
     rank: 2,
     featured: true,
+    year: "2026",
+    narrative:
+      "Manual crypto trading is emotional and inconsistent. I built Maria as an algorithmic trading system with statistical validation to remove human bias from trading decisions entirely. Every strategy is backtested with noise injection to ensure it isn't curve-fitted to historical data.",
+    keyDecisions: [
+      "Effect.js for type-safe functional composition with tagged errors — no try/catch anywhere in the codebase",
+      "Kelly criterion for mathematically optimal position sizing, with half-Kelly for conservative risk management",
+      "Spearman noise validation ensures strategies work on noisy data, not just clean historical curves",
+      "Docker Swarm deployment with heartbeat health checks for 24/7 production reliability",
+    ],
   },
   {
     id: "scrap-platform",
@@ -59,10 +89,26 @@ export const projects: Project[] = [
     longDescription:
       "A complete AI scraping ecosystem comprising three projects: a Next.js dashboard for managing scraping operations with API key management, a published npm package (scrap-ai) providing AI-powered data extraction with webhook support and Zod schema validation, and a serverless backend using AWS Lambda for processing webhooks and PDF conversion.",
     category: "ai-automation",
-    technologies: ["Next.js", "TypeScript", "AWS Lambda", "npm", "AI", "Serverless"],
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "AWS Lambda",
+      "npm",
+      "AI",
+      "Serverless",
+    ],
     githubUrl: "https://github.com/matovu-farid/scrap-platform",
     rank: 3,
     featured: true,
+    year: "2025",
+    narrative:
+      "I needed an AI-powered scraping tool and realized it should be three composable pieces — a dashboard for managing operations, an npm library others could use, and a serverless backend for processing. Each piece works independently but they compose into a complete product.",
+    keyDecisions: [
+      "Decomposed into 3 independent services: dashboard, npm package (scrap-ai), and Lambda backend",
+      "Async callback architecture instead of polling for long-running scrape operations",
+      "Published scrap-ai to npm with Zod schema validation for type-safe extraction",
+      "Webhook verification using timing-safe signature comparison for security",
+    ],
   },
   {
     id: "case-medinsurance",
@@ -78,6 +124,15 @@ export const projects: Project[] = [
       "https://raw.githubusercontent.com/matovu-farid/case_medinsurance/master/assets/images/splash.png",
     rank: 4,
     featured: true,
+    year: "2022",
+    narrative:
+      "Built for a real insurance company to let clients communicate with personnel and request quotations directly from their phones. This was a full product delivery — from design to Play Store publication.",
+    keyDecisions: [
+      "Flutter for cross-platform from a single Dart codebase targeting Android, iOS, and web",
+      "Firebase Cloud Functions for serverless email automation — no server to manage",
+      "Published to Google Play Store with full store listing and review process",
+      "Companion admin dashboard for hospital data management built separately",
+    ],
   },
   {
     id: "painter",
@@ -93,6 +148,14 @@ export const projects: Project[] = [
       "https://raw.githubusercontent.com/matovu-farid/painter/master/assets/image.png",
     rank: 5,
     featured: true,
+    year: "2022",
+    narrative:
+      "A creative drawing app — I wanted to explore Flutter's custom canvas APIs and ship something fun to the Play Store. The challenge was mapping touch input to smooth, natural-feeling strokes.",
+    keyDecisions: [
+      "Custom canvas rendering instead of third-party drawing libraries for full control",
+      "Direct touch input mapping for a natural drawing feel",
+      "Screenshot-based export keeps the save flow simple and reliable",
+    ],
   },
   {
     id: "apartment-manager",
@@ -106,6 +169,14 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/matovu-farid/apartment_manager",
     rank: 6,
     featured: true,
+    year: "2023",
+    narrative:
+      "A property management tool for tracking tenants, payments, and maintenance requests. I used this project to learn modern Rails patterns with Vite and Tailwind while building something practically useful.",
+    keyDecisions: [
+      "Modern Rails stack with Vite over Webpacker for faster frontend builds",
+      "RSpec + Rubocop for testing discipline and consistent code quality",
+      "Full CRUD with authentication and role-based authorization",
+    ],
   },
   {
     id: "book-reader",
@@ -239,6 +310,10 @@ export const projects: Project[] = [
   },
 ];
 
-export const featuredProjects = projects.filter((p) => p.featured).sort((a, b) => a.rank - b.rank);
+export const featuredProjects = projects
+  .filter((p) => p.featured)
+  .sort((a, b) => a.rank - b.rank);
 
-export const allProjectsSorted = [...projects].sort((a, b) => a.rank - b.rank);
+export const allProjectsSorted = [...projects].sort(
+  (a, b) => a.rank - b.rank
+);
