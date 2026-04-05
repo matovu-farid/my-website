@@ -168,21 +168,38 @@ export const projects: Project[] = [
     id: "apartment-manager",
     title: "Apartment Manager",
     description:
-      "Property management application for tracking tenants, payments, and maintenance built with Ruby on Rails.",
+      "Full-stack property management app with block management, rent billing cycles, expenditure tracking, and data export — built with Next.js 15 and PostgreSQL.",
     longDescription:
-      "A Ruby on Rails application for managing apartment properties, tenants, rent payments, and maintenance requests. Features a full CRUD interface with authentication and authorization.",
+      "A full-stack property management application for managing apartment blocks, residents, rent payments, and expenditures. Features role-based access with invitation keys, automatic monthly billing cycles, payment status tracking, CSV/Excel export, and a dashboard with key metrics. Built with Next.js 15, Prisma 6, Better Auth, and Tailwind CSS 4.",
     category: "web-apps",
-    technologies: ["Ruby on Rails", "PostgreSQL", "Ruby"],
-    githubUrl: "https://github.com/matovu-farid/apartment_manager",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Prisma",
+      "Better Auth",
+      "Tailwind CSS",
+      "Radix UI",
+      "Zod",
+    ],
+    githubUrl: "https://github.com/matovu-farid/apartment_manager_next",
+    imageUrl:
+      "https://raw.githubusercontent.com/matovu-farid/apartment_manager_next/main/screenshots/apartments.png",
+    screenshots: [
+      "https://raw.githubusercontent.com/matovu-farid/apartment_manager_next/main/screenshots/apartments.png",
+      "https://raw.githubusercontent.com/matovu-farid/apartment_manager_next/main/screenshots/payments.png",
+    ],
     rank: 6,
     featured: true,
-    year: "2023",
+    year: "2025",
     narrative:
-      "A property management tool for tracking tenants, payments, and maintenance requests. I used this project to learn modern Rails patterns with Vite and Tailwind while building something practically useful.",
+      "I rebuilt the apartment manager from scratch in Next.js to create a production-grade property management tool. The original Rails version taught me the domain — this version is the real product, with proper auth, billing cycles, role-based access, and data export.",
     keyDecisions: [
-      "Modern Rails stack with Vite over Webpacker for faster frontend builds",
-      "RSpec + Rubocop for testing discipline and consistent code quality",
-      "Full CRUD with authentication and role-based authorization",
+      "Next.js 15 App Router with server actions for mutations and cached queries for reads",
+      "Better Auth for email/password auth with verification and password reset flows",
+      "Automatic monthly rent billing cycles with paid/partial/overdue status tracking",
+      "Role-based block access with admin and viewer roles via invitation keys",
+      "CSV and Excel export for residents, payments, and expenditures",
     ],
   },
   {
