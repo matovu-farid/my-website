@@ -91,6 +91,57 @@ export default function CaseStudyContent({
             )}
           </motion.div>
 
+          {/* Video */}
+          {project.videoUrl && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="mb-10"
+            >
+              <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
+                Demo
+              </h2>
+              <div className="rounded-xl overflow-hidden border border-border aspect-video">
+                <iframe
+                  src={project.videoUrl.replace("youtu.be/", "www.youtube.com/embed/").replace("youtube.com/watch?v=", "youtube.com/embed/")}
+                  title={`${project.title} demo`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+            </motion.div>
+          )}
+
+          {/* Screenshots */}
+          {project.screenshots && project.screenshots.length > 1 && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.28 }}
+              className="mb-10"
+            >
+              <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
+                Screenshots
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {project.screenshots.map((src, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl overflow-hidden border border-border"
+                  >
+                    <img
+                      src={src}
+                      alt={`${project.title} screenshot ${i + 1}`}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
           {/* Narrative */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}

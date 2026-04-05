@@ -14,6 +14,8 @@ export interface Project {
   githubUrl?: string;
   liveUrl?: string;
   imageUrl?: string;
+  screenshots?: string[];
+  videoUrl?: string;
   rank: number;
   featured: boolean;
   narrative?: string;
@@ -40,7 +42,12 @@ export const projects: Project[] = [
     technologies: ["Tauri", "TypeScript", "Rust", "Bun", "TTS", "Monorepo"],
     githubUrl: "https://github.com/matovu-farid/rishi-monorepo",
     imageUrl:
-      "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/screenshots/library.png",
+      "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/apps/main/screenshots/library.png",
+    screenshots: [
+      "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/apps/main/screenshots/library.png",
+      "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/apps/main/screenshots/book.png",
+    ],
+    videoUrl: "https://youtu.be/vcWcpEGsof8",
     rank: 1,
     featured: true,
     year: "2025",
