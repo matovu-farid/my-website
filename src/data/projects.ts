@@ -21,6 +21,12 @@ export interface Project {
   narrative?: string;
   keyDecisions?: string[];
   year?: string;
+  archived?: boolean;
+  rebuiltFrom?: {
+    title: string;
+    tech: string;
+    reason: string;
+  };
 }
 
 export const CATEGORY_LABELS: Record<Category, string> = {
@@ -51,6 +57,12 @@ export const projects: Project[] = [
     rank: 1,
     featured: true,
     year: "2025",
+    rebuiltFrom: {
+      title: "Book Reader",
+      tech: "Electron + React",
+      reason:
+        "The original Electron app worked but produced 200MB+ binaries and couldn't share code across platforms. Tauri gave us 10x smaller binaries, a native Rust backend for TTS processing, and a monorepo structure that shares core logic across desktop, web, and mobile.",
+    },
     narrative:
       "I wanted a book reader that worked everywhere — desktop, web, and eventually mobile — with text-to-speech that didn't require an internet connection for every page. So I built Rishi as a monorepo with Tauri for native performance and a Rust worker for background audio generation.",
     keyDecisions: [
@@ -192,6 +204,12 @@ export const projects: Project[] = [
     rank: 6,
     featured: true,
     year: "2025",
+    rebuiltFrom: {
+      title: "Apartment Manager (Rails)",
+      tech: "Ruby on Rails",
+      reason:
+        "The original Rails version was a learning project — it taught me the property management domain. The Next.js rebuild is the real product: proper auth with email verification, automatic billing cycles, role-based access via invitation keys, and CSV/Excel export.",
+    },
     narrative:
       "I rebuilt the apartment manager from scratch in Next.js to create a production-grade property management tool. The original Rails version taught me the domain — this version is the real product, with proper auth, billing cycles, role-based access, and data export.",
     keyDecisions: [
@@ -206,7 +224,7 @@ export const projects: Project[] = [
     id: "book-reader",
     title: "Book Reader",
     description:
-      "Desktop EPUB reader with AI-powered narration using OpenAI's TTS API, smart audio caching, and paragraph highlighting.",
+      "Desktop EPUB reader with AI-powered narration using OpenAI's TTS API, smart audio caching, and paragraph highlighting. Archived — rebuilt as Rishi with Tauri.",
     longDescription:
       "An Electron desktop application with React and TypeScript for reading EPUB books. Features text-to-speech narration powered by OpenAI's TTS API with smart audio caching, paragraph highlighting during narration, and auto page navigation.",
     category: "cross-platform",
@@ -214,6 +232,7 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/matovu-farid/book-reader",
     rank: 7,
     featured: false,
+    archived: true,
   },
   {
     id: "proxy-service",
@@ -331,6 +350,20 @@ export const projects: Project[] = [
       "https://user-images.githubusercontent.com/87186552/156379820-3e11ea74-556f-41a2-963f-244ed33f7faf.png",
     rank: 15,
     featured: false,
+  },
+  {
+    id: "apartment-manager-rails",
+    title: "Apartment Manager (Rails)",
+    description:
+      "Original property management app built with Ruby on Rails. Archived — rebuilt as a full-stack Next.js application.",
+    longDescription:
+      "A Ruby on Rails application for managing apartment properties, tenants, rent payments, and maintenance requests. Features a full CRUD interface with authentication and authorization. This was the first version that taught the domain — later rebuilt with Next.js 15.",
+    category: "web-apps",
+    technologies: ["Ruby on Rails", "PostgreSQL", "Ruby"],
+    githubUrl: "https://github.com/matovu-farid/apartment_manager",
+    rank: 16,
+    featured: false,
+    archived: true,
   },
 ];
 

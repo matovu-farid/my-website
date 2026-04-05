@@ -59,9 +59,16 @@ export default function ProjectCard({
           <h3 className={`font-bold text-foreground ${featured ? "text-xl" : "text-lg"}`}>
             {project.title}
           </h3>
-          <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary/10 text-primary whitespace-nowrap ml-2">
-            {CATEGORY_LABELS[project.category]}
-          </span>
+          <div className="flex items-center gap-1.5 ml-2">
+            {project.archived && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground whitespace-nowrap">
+                Archived
+              </span>
+            )}
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary/10 text-primary whitespace-nowrap">
+              {CATEGORY_LABELS[project.category]}
+            </span>
+          </div>
         </div>
         <p className="text-muted-foreground text-sm mb-4 flex-grow leading-relaxed">
           {featured ? project.longDescription : project.description}

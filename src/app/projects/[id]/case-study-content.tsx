@@ -8,6 +8,7 @@ import {
   Code,
   ExternalLink,
   ChevronRight,
+  RefreshCw,
 } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -155,6 +156,35 @@ export default function CaseStudyContent({
               </p>
             </div>
           </motion.div>
+
+          {/* Evolution / Rebuilt From */}
+          {project.rebuiltFrom && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.32 }}
+              className="mb-10"
+            >
+              <h2 className="text-xl font-bold tracking-tight text-foreground mb-4 flex items-center gap-2">
+                <RefreshCw size={18} className="text-primary" />
+                Evolution
+              </h2>
+              <div className="bg-secondary/50 border border-border rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="text-sm text-muted-foreground line-through">
+                    {project.rebuiltFrom.title}
+                  </div>
+                  <ArrowRight size={14} className="text-primary" />
+                  <div className="text-sm font-medium text-foreground">
+                    {project.title}
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {project.rebuiltFrom.reason}
+                </p>
+              </div>
+            </motion.div>
+          )}
 
           {/* Tech stack */}
           <motion.div
