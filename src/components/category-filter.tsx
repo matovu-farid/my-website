@@ -32,7 +32,7 @@ export default function CategoryFilter({
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             selected === cat
               ? "bg-primary text-primary-foreground"
-              : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+              : "bg-secondary text-muted-foreground hover:text-foreground"
           }`}
         >
           {cat === "all" ? "All" : CATEGORY_LABELS[cat]}

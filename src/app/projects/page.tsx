@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion } from "motion/react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import PageTransition from "@/components/page-transition";
 import ProjectCard from "@/components/project-card";
 import ProjectSearch from "@/components/project-search";
 import CategoryFilter from "@/components/category-filter";
 import Pagination from "@/components/pagination";
+import ScrollReveal from "@/components/scroll-reveal";
 import { featuredProjects, allProjectsSorted } from "@/data/projects";
 import type { Category } from "@/data/projects";
 
@@ -53,73 +54,72 @@ export default function Projects() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow container mx-auto px-6 pt-24 pb-12">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl font-bold mb-2 text-center"
-        >
-          My Projects
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-gray-600 dark:text-gray-400 text-center mb-10"
-        >
-          A curated selection of my work across different domains
-        </motion.p>
+        <PageTransition>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2 text-center">
+            Projects
+          </h1>
+          <p className="text-muted-foreground text-center mb-10">
+            A curated selection of my work across different domains
+          </p>
 
-        {!isFiltering && (
-          <section className="mb-16">
-            <h2 className="text-2xl font-semibold mb-6">Featured</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {featuredProjects.map((project, i) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  featured
-                  index={i}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        <section>
           {!isFiltering && (
-            <h2 className="text-2xl font-semibold mb-6">All Projects</h2>
+            <section className="mb-16">
+              <h2 className="text-xl font-semibold text-foreground mb-6">
+                Featured
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {featuredProjects.map((project, i) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    featured
+                    index={i}
+                  />
+                ))}
+              </div>
+            </section>
           )}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="flex-grow">
-              <ProjectSearch value={search} onSearchChangeAction={handleSearchChange} />
+
+          <section>
+            {!isFiltering && (
+              <h2 className="text-xl font-semibold text-foreground mb-6">
+                All Projects
+              </h2>
+            )}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="flex-grow">
+                <ProjectSearch
+                  value={search}
+                  onSearchChangeAction={handleSearchChange}
+                />
+              </div>
             </div>
-          </div>
-          <div className="mb-6">
-            <CategoryFilter
-              selected={category}
-              onCategoryChangeAction={handleCategoryChange}
+            <div className="mb-6">
+              <CategoryFilter
+                selected={category}
+                onCategoryChangeAction={handleCategoryChange}
+              />
+            </div>
+
+            {paginatedProjects.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedProjects.map((project, i) => (
+                  <ProjectCard key={project.id} project={project} index={i} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-muted-foreground">
+                No projects found matching your search.
+              </div>
+            )}
+
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChangeAction={setPage}
             />
-          </div>
-
-          {paginatedProjects.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {paginatedProjects.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 text-gray-500">
-              No projects found matching your search.
-            </div>
-          )}
-
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChangeAction={setPage}
-          />
-        </section>
+          </section>
+        </PageTransition>
       </main>
       <Footer />
     </div>
