@@ -8,7 +8,6 @@ import ProjectCard from "@/components/project-card";
 import ProjectSearch from "@/components/project-search";
 import CategoryFilter from "@/components/category-filter";
 import Pagination from "@/components/pagination";
-import ScrollReveal from "@/components/scroll-reveal";
 import { featuredProjects, allProjectsSorted } from "@/data/projects";
 import type { Category } from "@/data/projects";
 
