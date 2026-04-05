@@ -196,10 +196,10 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/matovu-farid/apartment_manager_next",
     imageUrl:
-      "https://raw.githubusercontent.com/matovu-farid/apartment_manager_next/main/screenshots/apartments.png",
+      "/screenshots/apartment-manager/apartments.png",
     screenshots: [
-      "https://raw.githubusercontent.com/matovu-farid/apartment_manager_next/main/screenshots/apartments.png",
-      "https://raw.githubusercontent.com/matovu-farid/apartment_manager_next/main/screenshots/payments.png",
+      "/screenshots/apartment-manager/apartments.png",
+      "/screenshots/apartment-manager/payments.png",
     ],
     rank: 6,
     featured: true,
