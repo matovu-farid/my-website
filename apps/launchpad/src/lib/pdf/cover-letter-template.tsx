@@ -1,5 +1,5 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, Text, StyleSheet } from "@react-pdf/renderer";
 import type { CoverLetterContent } from "@/lib/ai/generate-cover-letter";
 import { registerFonts } from "./register-fonts";
 

@@ -20,9 +20,9 @@ export async function renderResumePdf(
   companyName: string,
   version: number
 ): Promise<string> {
-  const buffer = await renderToBuffer(
-    React.createElement(ResumeDocument, { ...profile, content })
-  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const element = React.createElement(ResumeDocument, { ...profile, content }) as any;
+  const buffer = await renderToBuffer(element);
 
   const dir = path.join(GENERATED_DIR, String(jobId));
   await ensureDir(dir);
@@ -42,9 +42,9 @@ export async function renderCoverLetterPdf(
   companyName: string,
   version: number
 ): Promise<string> {
-  const buffer = await renderToBuffer(
-    React.createElement(CoverLetterDocument, { ...profile, content })
-  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const element = React.createElement(CoverLetterDocument, { ...profile, content }) as any;
+  const buffer = await renderToBuffer(element);
 
   const dir = path.join(GENERATED_DIR, String(jobId));
   await ensureDir(dir);
