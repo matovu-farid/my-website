@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { jobs, companies, jobDescriptions } from "@/lib/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { parseJobDescription } from "@/lib/ai/parse-job";
 import { calculateMatchScore } from "@/lib/ai/match-score";
 import { getProfile } from "./profile-actions";
