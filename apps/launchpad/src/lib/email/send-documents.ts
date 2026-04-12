@@ -2,7 +2,9 @@ import { Resend } from "resend";
 import { readFile } from "fs/promises";
 import path from "path";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY!);
+}
 
 export async function sendDocumentsEmail(params: {
   jobTitle: string;
@@ -40,7 +42,7 @@ export async function sendDocumentsEmail(params: {
     .filter(Boolean)
     .join("\n");
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from: "Launchpad <onboarding@resend.dev>",
     to: process.env.EMAIL_ADDRESS!,
     subject: `[Launchpad] Resume & Cover Letter — ${params.jobTitle} at ${params.companyName}`,
