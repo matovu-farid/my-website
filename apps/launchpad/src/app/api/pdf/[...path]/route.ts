@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 const GENERATED_DIR = path.join(process.cwd(), "generated");
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path: pathSegments } = await params;
