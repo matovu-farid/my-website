@@ -108,7 +108,7 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="text-muted-foreground max-w-md mx-auto mb-10 leading-relaxed"
             >
-              From native Apple products to production accounting and inventory
+              From a native Apple reading platform to production accounting and inventory
               systems, picking the right tool for every job.
             </motion.p>
 
