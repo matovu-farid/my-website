@@ -13,6 +13,8 @@ export interface Project {
   technologies: string[];
   githubUrl?: string;
   liveUrl?: string;
+  appStoreUrl?: string;
+  productUrl?: string;
   imageUrl?: string;
   screenshots?: string[];
   videoUrl?: string;
@@ -41,35 +43,108 @@ export const projects: Project[] = [
     id: "rishi",
     title: "Rishi",
     description:
-      "Cross-platform EPUB and PDF reader with offline-friendly Text-to-Speech, built with Tauri as a monorepo spanning desktop, web, and mobile.",
+      "Production Apple reading platform for EPUB and PDF books, with read-aloud, highlights, sync, sharing, and AI chat grounded in the book you are reading.",
     longDescription:
-      "A cross-platform book reader featuring library management, reading progress tracking, TTS with background generation queue, themes, keyboard/touch navigation, and PDF dual-page viewing. Built as a monorepo with Tauri for native desktop performance across macOS, Windows, and Linux.",
+      "Rishi is an Apple-only reading platform across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences. It supports EPUB and PDF reading, read-aloud, highlights, synchronized progress, sharing, and AI chat grounded in the current book. Android support is planned, but there is no Android app today.",
     category: "cross-platform",
-    technologies: ["Tauri", "TypeScript", "Rust", "Bun", "TTS", "Monorepo"],
-    githubUrl: "https://github.com/matovu-farid/rishi-monorepo",
-    imageUrl:
-      "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/apps/main/screenshots/library.png",
-    screenshots: [
-      "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/apps/main/screenshots/library.png",
-      "https://raw.githubusercontent.com/matovu-farid/rishi-monorepo/main/apps/main/screenshots/book.png",
+    technologies: [
+      "Swift",
+      "SwiftUI",
+      "Apple Platforms",
+      "EPUB/PDF",
+      "Text-to-Speech",
+      "AI",
+      "Cloud Sync",
     ],
-    videoUrl: "https://youtu.be/vcWcpEGsof8",
+    appStoreUrl: "https://apps.apple.com/us/app/rishi-reader/id6763041630",
+    productUrl: "https://rishi.fidexa.org",
+    githubUrl: "https://github.com/matovu-farid/rishi-monorepo",
+    imageUrl: "/screenshots/rishi/app-store-listing.png",
     rank: 1,
     featured: true,
-    year: "2025",
-    rebuiltFrom: {
-      title: "Book Reader",
-      tech: "Electron + React",
-      reason:
-        "The original Electron app worked but produced 200MB+ binaries and couldn't share code across platforms. Tauri gave us 10x smaller binaries, a native Rust backend for TTS processing, and a monorepo structure that shares core logic across desktop, web, and mobile.",
-    },
+    year: "2026",
     narrative:
-      "I wanted a book reader that worked everywhere — desktop, web, and eventually mobile — with text-to-speech that didn't require an internet connection for every page. So I built Rishi as a monorepo with Tauri for native performance and a Rust worker for background audio generation.",
+      "I built Rishi around the way people actually read across Apple devices: open an EPUB or PDF, listen with read-aloud, save highlights, sync progress, share passages, and ask questions in an AI chat grounded in the current book. The production release now spans iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences. Android is planned for a later phase.",
     keyDecisions: [
-      "Chose Tauri over Electron for 10x smaller binaries and native Rust backend integration",
-      "Monorepo structure shares core reading logic across desktop, web, and mobile targets",
-      "Background TTS queue prevents UI blocking during audio generation",
-      "Dual-page PDF viewing mode for desktop-sized screens",
+      "Native Apple delivery keeps reading, audio, sharing, and device handoff aligned across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences",
+      "EPUB and PDF support share one reading model for progress, highlights, and synchronized state",
+      "Read-aloud runs as a first-class reading mode, with audio controls available while the user continues through the book",
+      "AI chat is grounded in the current book so answers stay tied to the reader's source material",
+      "Android remains planned expansion rather than a current platform commitment",
+    ],
+  },
+  {
+    id: "money-lending",
+    title: "Money Lending Management System",
+    description:
+      "Production fintech platform for running a money-lending business end to end: loans, daily interest, investor capital, watchlists, P&L, and Balance Sheet.",
+    longDescription:
+      "A full-stack lending operations product. Issues loans with daily reducing-balance interest, collects repayments with printable receipts, tracks investor (creditor) capital, auto-flags borrowers at risk, records expenses and income, and generates dashboards plus P&L and Balance Sheet exports. Sensitive actions go through a review-then-confirm approvals workflow before posting.",
+    category: "web-apps",
+    technologies: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "PostgreSQL (Neon)",
+      "Drizzle ORM",
+      "TanStack DB",
+      "ElectricSQL",
+      "Better Auth",
+      "BigNumber.js",
+      "Sentry",
+      "Cypress",
+      "Vitest",
+    ],
+    githubUrl: "https://github.com/matovu-farid/money-lending",
+    liveUrl: "https://money-lending.fidexa.org/home",
+    rank: 1.5,
+    featured: true,
+    year: "2026",
+    narrative:
+      "Built for a real lending business that needed to move off spreadsheets without sacrificing the trust their existing process gave them. The core constraint was money math: daily reducing-balance interest, payment allocation (interest first, then principal), 30-day minimums, all calculated with BigNumber.js so a rounding error never costs the operator a customer. Everything sensitive goes through a review-then-confirm step before it posts.",
+    keyDecisions: [
+      "BigNumber.js for all money math: no floating-point arithmetic touches a balance",
+      "TanStack DB collections with ElectricSQL for reactive, real-time UI state across roles",
+      "Role-based access (Super Admin, Admin, Loan Officer, Viewer) implemented through Better Auth plus a permission middleware",
+      "Review-then-confirm approvals before sensitive postings (rate changes, fund transfers, large payments) so a misclick never silently changes the books",
+      "Custom 'Quantitative Minimalist' design system with tabular Geist Mono for numbers, so columns of figures scan cleanly",
+    ],
+  },
+  {
+    id: "inventory-trade",
+    title: "Inventory and Trade Management System",
+    description:
+      "Multi-module inventory platform for a clothing import / retail business. Supply, Store, and Shop apps share one ledger with double-entry bookkeeping for loss detection at every stage.",
+    longDescription:
+      "An end-to-end inventory and trade management system that tracks goods from international procurement (China buying trips) through warehousing to retail sale across multiple shops. Built as one TanStack Start codebase serving three role-based front ends (Supply, Store, Shop) on top of a shared database and accounting engine. Double-entry bookkeeping with a shared ledger surfaces loss at any stage of the supply chain.",
+    category: "web-apps",
+    technologies: [
+      "TanStack Start",
+      "TanStack Router",
+      "TanStack DB",
+      "React",
+      "TypeScript",
+      "PostgreSQL (Neon)",
+      "Drizzle ORM",
+      "Cloudflare Workers",
+      "Better Auth",
+      "Resend",
+      "Sentry",
+      "Cypress",
+    ],
+    githubUrl: "https://github.com/matovu-farid/inventory",
+    liveUrl: "https://inventory.fidexa.org/home",
+    rank: 1.7,
+    featured: true,
+    year: "2026",
+    narrative:
+      "The business had 15 years of buying trips tracked in a single Excel sheet (gross_profit.xlsx, 47 routes from 2011 to 2026). The brief was to move that operation into a system without losing the institutional knowledge baked into the spreadsheet. I derived the schema and accounting rules directly from the Excel, then split the UI into three role-based modules sharing a single ledger so loss could be detected at any stage of the supply chain.",
+    keyDecisions: [
+      "One codebase, three role-based modules (Supply, Store, Shop) sharing a single accounting engine, so loss is visible at every transition",
+      "Double-entry bookkeeping enforced at the server function layer, not the UI, so the ledger stays sound regardless of client",
+      "TanStack Start on Cloudflare Workers for global edge deploy and a scheduled worker that runs hourly cron jobs (notifications, digests)",
+      "Multi-currency procurement records actual RMB to USD to UGX rates per trip, not an averaged guess, so cost of goods reflects reality",
+      "Full audit trail with a viewer in Settings, every mutation routed through validated server functions",
     ],
   },
   {

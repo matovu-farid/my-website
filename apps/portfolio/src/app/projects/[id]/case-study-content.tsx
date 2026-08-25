@@ -250,6 +250,28 @@ export default function CaseStudyContent({
                 View Source
               </a>
             )}
+            {project.appStoreUrl && (
+              <a
+                href={project.appStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-card border border-border px-5 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+              >
+                <ExternalLink size={16} />
+                App Store
+              </a>
+            )}
+            {project.productUrl && (
+              <a
+                href={project.productUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-card border border-border px-5 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+              >
+                <ExternalLink size={16} />
+                Product Site
+              </a>
+            )}
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
@@ -258,7 +280,7 @@ export default function CaseStudyContent({
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 <ExternalLink size={16} />
-                Live Demo
+                Production App
               </a>
             )}
           </motion.div>

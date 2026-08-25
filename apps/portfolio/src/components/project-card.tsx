@@ -104,6 +104,28 @@ export default function ProjectCard({
               Source
             </a>
           )}
+          {project.appStoreUrl && (
+            <a
+              href={project.appStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ExternalLink size={16} />
+              App Store
+            </a>
+          )}
+          {project.productUrl && (
+            <a
+              href={project.productUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ExternalLink size={16} />
+              Product Site
+            </a>
+          )}
           {project.liveUrl && (
             <a
               href={project.liveUrl}
@@ -112,7 +134,7 @@ export default function ProjectCard({
               className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ExternalLink size={16} />
-              Live
+              Production App
             </a>
           )}
         </div>

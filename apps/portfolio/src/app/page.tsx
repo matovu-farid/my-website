@@ -15,17 +15,17 @@ import { featuredProjects } from "@/data/projects";
 const capabilities = [
   {
     icon: Smartphone,
-    title: "Cross-Platform",
+    title: "Native Apple Delivery",
     description:
-      "Tauri, Flutter, Electron — desktop, mobile, and web from shared codebases",
-    tags: ["Tauri", "Flutter", "Electron", "Rust"],
+      "Native Apple products across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences",
+    tags: ["Swift", "SwiftUI", "Apple Platforms"],
   },
   {
     icon: Server,
     title: "Backend & APIs",
     description:
-      "Full-stack services with type-safe APIs, serverless, and real-time data",
-    tags: ["Next.js", "Rails", "tRPC", "AWS Lambda"],
+      "Production full-stack systems with type-safe APIs, serverless infrastructure, and real-time data",
+    tags: ["Next.js", "TanStack Start", "PostgreSQL", "Cloudflare"],
   },
   {
     icon: Sparkles,
@@ -108,8 +108,8 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="text-muted-foreground max-w-md mx-auto mb-10 leading-relaxed"
             >
-              From algorithmic trading bots to cross-platform book readers —
-              picking the right tool for every job.
+              From native Apple products to production accounting and inventory
+              systems, picking the right tool for every job.
             </motion.p>
 
             <motion.div
