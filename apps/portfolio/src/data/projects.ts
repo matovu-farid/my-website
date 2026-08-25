@@ -1,5 +1,6 @@
 export type Category =
   | "ai-automation"
+  | "native-apps"
   | "cross-platform"
   | "web-apps"
   | "dev-tools";
@@ -13,6 +14,7 @@ export interface Project {
   technologies: string[];
   githubUrl?: string;
   liveUrl?: string;
+  liveLabel?: string;
   appStoreUrl?: string;
   productUrl?: string;
   imageUrl?: string;
@@ -33,6 +35,7 @@ export interface Project {
 
 export const CATEGORY_LABELS: Record<Category, string> = {
   "ai-automation": "AI & Automation",
+  "native-apps": "Native Apple Apps",
   "cross-platform": "Cross-Platform Apps",
   "web-apps": "Web Applications",
   "dev-tools": "Developer Tools",
@@ -46,7 +49,7 @@ export const projects: Project[] = [
       "Production Apple reading platform for EPUB and PDF books, with read-aloud, highlights, sync, sharing, and AI chat grounded in the book you are reading.",
     longDescription:
       "Rishi is an Apple-only reading platform across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences. It supports EPUB and PDF reading, read-aloud, highlights, synchronized progress, sharing, and AI chat grounded in the current book. Android support is planned, but there is no Android app today.",
-    category: "cross-platform",
+    category: "native-apps",
     technologies: [
       "Swift",
       "SwiftUI",
@@ -97,6 +100,7 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/matovu-farid/money-lending",
     liveUrl: "https://money-lending.fidexa.org/home",
+    liveLabel: "Production App",
     rank: 1.5,
     featured: true,
     year: "2026",
@@ -134,6 +138,7 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/matovu-farid/inventory",
     liveUrl: "https://inventory.fidexa.org/home",
+    liveLabel: "Production App",
     rank: 1.7,
     featured: true,
     year: "2026",
@@ -299,7 +304,7 @@ export const projects: Project[] = [
     id: "book-reader",
     title: "Book Reader",
     description:
-      "Desktop EPUB reader with AI-powered narration using OpenAI's TTS API, smart audio caching, and paragraph highlighting. Archived — rebuilt as Rishi with Tauri.",
+      "Earlier desktop EPUB reading prototype with AI-powered narration, smart audio caching, and paragraph highlighting. It preceded the current Apple Rishi product.",
     longDescription:
       "An Electron desktop application with React and TypeScript for reading EPUB books. Features text-to-speech narration powered by OpenAI's TTS API with smart audio caching, paragraph highlighting during narration, and auto page navigation.",
     category: "cross-platform",

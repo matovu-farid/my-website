@@ -134,7 +134,7 @@ export default function ProjectCard({
               className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ExternalLink size={16} />
-              Production App
+              {project.liveLabel ?? "Live"}
             </a>
           )}
         </div>

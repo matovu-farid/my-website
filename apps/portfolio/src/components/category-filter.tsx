@@ -12,6 +12,7 @@ interface CategoryFilterProps {
 const categories: (Category | "all")[] = [
   "all",
   "ai-automation",
+  "native-apps",
   "cross-platform",
   "web-apps",
   "dev-tools",

@@ -17,7 +17,7 @@ const capabilities = [
     icon: Smartphone,
     title: "Native Apple Delivery",
     description:
-      "Native Apple products across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences",
+      "Native Apple delivery across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences",
     tags: ["Swift", "SwiftUI", "Apple Platforms"],
   },
   {

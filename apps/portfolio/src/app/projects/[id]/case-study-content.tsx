@@ -280,7 +280,7 @@ export default function CaseStudyContent({
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 <ExternalLink size={16} />
-                Production App
+                {project.liveLabel ?? "Live"}
               </a>
             )}
           </motion.div>
