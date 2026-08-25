@@ -53,11 +53,11 @@ Use these exact URLs when rendered:
 
 - Rishi App Store: `https://apps.apple.com/us/app/rishi-reader/id6763041630`
 - Rishi product site: `https://rishi.fidexa.org`
-- Inventory production site: `https://inventory.fidexa.org`
-- Money Lending production site: `https://money-lending.fidexa.org/`
+- Inventory production site: `https://inventory.fidexa.org/home`
+- Money Lending production site: `https://money-lending.fidexa.org/home`
 - Existing repository links remain where they are accurate.
 
-The Rishi App Store listing was checked in the in-app browser and resolved to the live “Rishi Reader” listing with “iPhone, iPad, Mac” support. The Inventory URL resolved to `/home`, and the Money Lending URL resolved to the Kaks Credit sign-in page. The Rishi marketing site currently contains launch-soon copy; refreshing that separate product site is explicitly out of scope for this pass unless requested later.
+The Rishi App Store listing was checked in the in-app browser and resolved to the live “Rishi Reader” listing with “iPhone, iPad, Mac” support. The Inventory and Money Lending links use their authenticated `/home` entry points. The Rishi marketing site currently contains launch-soon copy; refreshing that separate product site is explicitly out of scope for this pass unless requested later.
 
 ## Copy rules
 
