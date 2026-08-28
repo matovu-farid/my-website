@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -15,31 +14,24 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <nav className="container mx-auto px-6 py-4">
-        <ul className="flex justify-center space-x-8">
+    <header className="site-header">
+      <nav className="site-shell site-header-inner" aria-label="Primary navigation">
+        <Link href="/" className="brand-lockup" aria-label="Farid Matovu home">
+          <span className="brand-mark" aria-hidden="true">FM</span>
+          <span><span>Farid Matovu</span><span className="brand-meta">Systems that ship</span></span>
+        </Link>
+        <ul className="header-nav">
           {links.map(({ href, label }) => {
             const isActive =
               href === "/" ? pathname === "/" : pathname.startsWith(href);
             return (
               <li key={href}>
-                <Link href={href} passHref>
-                  <motion.span
-                    className={`text-sm font-medium tracking-wide transition-colors duration-200 ${
-                      isActive
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {label}
-                  </motion.span>
-                </Link>
+                <Link href={href} aria-current={isActive ? "page" : undefined}>{label}</Link>
               </li>
             );
           })}
         </ul>
+        <span className="header-availability"><span className="status-dot" aria-hidden="true" /> Available for selected work</span>
       </nav>
     </header>
   );

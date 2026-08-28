@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "verify:design": "node scripts/verify-design.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

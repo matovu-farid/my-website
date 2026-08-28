@@ -1,10 +1,14 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
-    <footer className="border-t border-border py-8 mt-16">
-      <div className="container mx-auto px-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Farid Matovu. All rights reserved.
-        </p>
+    <footer className="site-footer">
+      <div className="site-shell footer-inner">
+        <p>© {new Date().getFullYear()} Farid Matovu. Products, platforms, and the systems between them.</p>
+        <nav className="footer-links" aria-label="Footer navigation">
+          <Link href="/projects">Work</Link>
+          <Link href="/contact">Contact</Link>
+        </nav>
       </div>
     </footer>
   );

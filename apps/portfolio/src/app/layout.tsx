@@ -4,9 +4,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Farid Matovu — Full-Stack Engineer",
+  title: "Farid Matovu — Systems that ship",
   description:
-    "Full-stack polyglot engineer building complete systems — from trading bots to cross-platform readers to AI-powered tools.",
+    "Farid Matovu builds products, platforms, and the systems between them.",
 };
 
 export default function RootLayout({
@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-background text-foreground`}>
+    <html lang="en">
+      <body className={inter.className}>
         {children}
       </body>
     </html>

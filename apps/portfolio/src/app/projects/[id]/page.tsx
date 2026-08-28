@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { projects } from "@/data/projects";
+import { allProjectsSorted } from "@/data/projects";
 import CaseStudyContent from "./case-study-content";
 
 interface PageProps {
@@ -7,14 +7,14 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return projects
+  return allProjectsSorted
     .filter((p) => p.narrative)
     .map((p) => ({ id: p.id }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
-  const project = projects.find((p) => p.id === id);
+  const project = allProjectsSorted.find((p) => p.id === id);
   if (!project) return { title: "Not Found" };
   return {
     title: `${project.title} — Farid Matovu`,
@@ -24,14 +24,14 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function CaseStudyPage({ params }: PageProps) {
   const { id } = await params;
-  const project = projects.find((p) => p.id === id);
+  const project = allProjectsSorted.find((p) => p.id === id);
 
   if (!project || !project.narrative) {
     notFound();
   }
 
-  const projectIndex = projects.filter((p) => p.narrative).findIndex((p) => p.id === id);
-  const narrativeProjects = projects.filter((p) => p.narrative);
+  const projectIndex = allProjectsSorted.filter((p) => p.narrative).findIndex((p) => p.id === id);
+  const narrativeProjects = allProjectsSorted.filter((p) => p.narrative);
   const prevProject = projectIndex > 0 ? narrativeProjects[projectIndex - 1] : null;
   const nextProject =
     projectIndex < narrativeProjects.length - 1

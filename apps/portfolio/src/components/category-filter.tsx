@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import type { Category } from "@/data/projects";
 import { CATEGORY_LABELS } from "@/data/projects";
 
@@ -23,21 +22,17 @@ export default function CategoryFilter({
   onCategoryChangeAction,
 }: CategoryFilterProps) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="filter-pills">
       {categories.map((cat) => (
-        <motion.button
+        <button
           key={cat}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          type="button"
           onClick={() => onCategoryChangeAction(cat)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-            selected === cat
-              ? "bg-primary text-primary-foreground"
-              : "bg-secondary text-muted-foreground hover:text-foreground"
-          }`}
+          className="filter-pill"
+          data-active={selected === cat}
         >
           {cat === "all" ? "All" : CATEGORY_LABELS[cat]}
-        </motion.button>
+        </button>
       ))}
     </div>
   );

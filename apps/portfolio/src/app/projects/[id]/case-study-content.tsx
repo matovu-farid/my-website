@@ -1,332 +1,83 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Code,
-  ExternalLink,
-  ChevronRight,
-  RefreshCw,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Code, ExternalLink, RefreshCw } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PageTransition from "@/components/page-transition";
 import type { Project } from "@/data/projects";
-import { CATEGORY_LABELS } from "@/data/projects";
+import { CATEGORY_LABELS, allProjectsSorted } from "@/data/projects";
 
 interface CaseStudyContentProps {
   project: Project;
   prevProject: Project | null;
   nextProject: Project | null;
 }
-
-export default function CaseStudyContent({
-  project,
-  prevProject,
-  nextProject,
-}: CaseStudyContentProps) {
+export default function CaseStudyContent({ project, prevProject, nextProject }: CaseStudyContentProps) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen">
       <Header />
-      <main className="flex-grow container mx-auto px-6 pt-24 pb-12 max-w-3xl">
-        <PageTransition>
-          {/* Back link */}
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
-          >
-            <ArrowLeft size={14} />
-            Back to Projects
-          </Link>
+      <main className="site-shell case-study-shell">
+          <article className="case-study-main">
+            <Link href="/projects" className="eyebrow">← Back to index</Link>
+            <p className="case-study-meta" style={{ marginTop: "2rem" }}>{CATEGORY_LABELS[project.category]} {project.year ? "· " + project.year : ""}</p>
+            <h1>{project.title}</h1>
+            <p className="case-study-description">{project.description}</p>
 
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary/10 text-primary">
-                {CATEGORY_LABELS[project.category]}
-              </span>
-              {project.year && (
-                <>
-                  <span className="text-muted-foreground">·</span>
-                  <span className="text-xs text-muted-foreground">
-                    {project.year}
-                  </span>
-                </>
-              )}
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2">
-              {project.title}
-            </h1>
-            <p className="text-muted-foreground leading-relaxed mb-8">
-              {project.description}
-            </p>
-          </motion.div>
-
-          {/* Hero image */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-10"
-          >
+            <p className="case-study-label">Product evidence</p>
             {project.imageUrl ? (
-              <div className="rounded-xl overflow-hidden border border-border">
-                <img
-                  src={project.imageUrl}
-                  alt={project.title}
-                  className="w-full h-auto"
-                />
+              <div className="case-study-media">
+                <img src={project.imageUrl} alt={project.title + " product interface preview"} width={1021} height={657} />
               </div>
             ) : (
-              <div className="rounded-xl bg-secondary h-48 flex items-center justify-center border border-border">
-                <span className="text-5xl font-bold text-muted-foreground/20">
-                  {project.title[0]}
-                </span>
-              </div>
+              <div className="case-study-media"><span className="project-card-media-placeholder" aria-hidden="true">{project.title[0]}</span></div>
             )}
-          </motion.div>
 
-          {/* Video */}
-          {project.videoUrl && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-              className="mb-10"
-            >
-              <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
-                Demo
-              </h2>
-              <div className="rounded-xl overflow-hidden border border-border aspect-video">
-                <iframe
-                  src={project.videoUrl.replace("youtu.be/", "www.youtube.com/embed/").replace("youtube.com/watch?v=", "youtube.com/embed/")}
-                  title={`${project.title} demo`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </div>
-            </motion.div>
-          )}
+            {project.screenshots && project.screenshots.length > 1 && (
+              <>
+                <p className="case-study-label">Additional screens</p>
+                <div className="detail-layout">
+                  {project.screenshots.map((src, index) => <div className="case-study-media" key={src}><img src={src} alt={project.title + " screen " + (index + 1)} width={1021} height={657} loading="lazy" /></div>)}
+                </div>
+              </>
+            )}
 
-          {/* Screenshots */}
-          {project.screenshots && project.screenshots.length > 1 && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.28 }}
-              className="mb-10"
-            >
-              <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
-                Screenshots
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {project.screenshots.map((src, i) => (
-                  <div
-                    key={i}
-                    className="rounded-xl overflow-hidden border border-border"
-                  >
-                    <img
-                      src={src}
-                      alt={`${project.title} screenshot ${i + 1}`}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
+            <p className="case-study-label">Why it exists</p>
+            <p className="case-study-copy">{project.narrative}</p>
 
-          {/* Narrative */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-10"
-          >
-            <div className="border-l-2 border-primary pl-5">
-              <p className="text-foreground leading-relaxed text-lg">
-                {project.narrative}
-              </p>
+            {project.rebuiltFrom && (
+              <>
+                <p className="case-study-label"><RefreshCw size={13} style={{ display: "inline", marginRight: ".35rem" }} />Evolution</p>
+                <div className="detail-card"><p>{project.rebuiltFrom.reason}</p></div>
+              </>
+            )}
+
+            {project.keyDecisions && (
+              <>
+                <p className="case-study-label">Key decisions</p>
+                <ul className="case-study-decision-list">{project.keyDecisions.map((decision) => <li key={decision}>{decision}</li>)}</ul>
+              </>
+            )}
+
+            <div className="case-study-links">
+              {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"><Code size={13} style={{ display: "inline" }} /> Source</a>}
+              {project.appStoreUrl && <a href={project.appStoreUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} style={{ display: "inline" }} /> App Store</a>}
+              {project.productUrl && <a href={project.productUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} style={{ display: "inline" }} /> Product site</a>}
+              {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} style={{ display: "inline" }} /> {project.liveLabel ?? "Live"}</a>}
             </div>
-          </motion.div>
 
-          {/* Evolution / Rebuilt From */}
-          {project.rebuiltFrom && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.32 }}
-              className="mb-10"
-            >
-              <h2 className="text-xl font-bold tracking-tight text-foreground mb-4 flex items-center gap-2">
-                <RefreshCw size={18} className="text-primary" />
-                Evolution
-              </h2>
-              <div className="bg-secondary/50 border border-border rounded-xl p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="text-sm text-muted-foreground line-through">
-                    {project.rebuiltFrom.title}
-                  </div>
-                  <ArrowRight size={14} className="text-primary" />
-                  <div className="text-sm font-medium text-foreground">
-                    {project.title}
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {project.rebuiltFrom.reason}
-                </p>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Tech stack */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="mb-10"
-          >
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="text-sm px-3 py-1 rounded-full bg-secondary text-muted-foreground"
-                >
-                  {tech}
-                </span>
-              ))}
+            <div className="case-study-nav">
+              {prevProject ? <Link href={"/projects/" + prevProject.id}><ArrowLeft size={12} style={{ display: "inline" }} /> {prevProject.title}</Link> : <span />}
+              {nextProject ? <Link href={"/projects/" + nextProject.id}>{nextProject.title} <ArrowRight size={12} style={{ display: "inline" }} /></Link> : <span />}
             </div>
-          </motion.div>
+          </article>
 
-          {/* Key Decisions */}
-          {project.keyDecisions && project.keyDecisions.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mb-10"
-            >
-              <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
-                Key Decisions
-              </h2>
-              <div className="space-y-3">
-                {project.keyDecisions.map((decision, i) => (
-                  <div key={i} className="flex gap-3 items-start">
-                    <ChevronRight
-                      size={16}
-                      className="text-primary mt-0.5 flex-shrink-0"
-                    />
-                    <p className="text-muted-foreground leading-relaxed">
-                      {decision}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45 }}
-            className="flex gap-4 mb-16"
-          >
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-card border border-border px-5 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
-              >
-                <Code size={16} />
-                View Source
-              </a>
-            )}
-            {project.appStoreUrl && (
-              <a
-                href={project.appStoreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-card border border-border px-5 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
-              >
-                <ExternalLink size={16} />
-                App Store
-              </a>
-            )}
-            {project.productUrl && (
-              <a
-                href={project.productUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-card border border-border px-5 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-secondary transition-colors"
-              >
-                <ExternalLink size={16} />
-                Product Site
-              </a>
-            )}
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                <ExternalLink size={16} />
-                {project.liveLabel ?? "Live"}
-              </a>
-            )}
-          </motion.div>
-
-          {/* Prev/Next navigation */}
-          <div className="border-t border-border pt-8 flex justify-between">
-            {prevProject ? (
-              <Link
-                href={`/projects/${prevProject.id}`}
-                className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <ArrowLeft
-                  size={14}
-                  className="group-hover:-translate-x-1 transition-transform"
-                />
-                <div>
-                  <div className="text-xs text-muted-foreground">Previous</div>
-                  <div className="font-medium text-foreground">
-                    {prevProject.title}
-                  </div>
-                </div>
-              </Link>
-            ) : (
-              <div />
-            )}
-            {nextProject ? (
-              <Link
-                href={`/projects/${nextProject.id}`}
-                className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors text-right"
-              >
-                <div>
-                  <div className="text-xs text-muted-foreground">Next</div>
-                  <div className="font-medium text-foreground">
-                    {nextProject.title}
-                  </div>
-                </div>
-                <ArrowRight
-                  size={14}
-                  className="group-hover:translate-x-1 transition-transform"
-                />
-              </Link>
-            ) : (
-              <div />
-            )}
-          </div>
-        </PageTransition>
+          <aside className="case-study-aside">
+            <p className="eyebrow">Route matrix</p>
+            <h2>Selected case studies.</h2>
+            <ul className="route-list">{allProjectsSorted.filter((p) => p.narrative).slice(0, 8).map((route) => <li key={route.id}><Link href={"/projects/" + route.id}>{route.title}</Link></li>)}</ul>
+            <p className="case-study-label">Anatomy</p>
+            <p style={{ color: "var(--slate)", fontSize: ".76rem", lineHeight: 1.6 }}>Context · evidence · narrative<br />Decisions · links · next step</p>
+          </aside>
       </main>
       <Footer />
     </div>

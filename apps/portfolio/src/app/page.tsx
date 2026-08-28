@@ -1,245 +1,95 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import { Smartphone, Server, Sparkles, Cloud, ArrowRight } from "lucide-react";
+import { ArrowRight, Cloud, Server, Smartphone, Sparkles } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PageTransition from "@/components/page-transition";
-import StatCounter from "@/components/stat-counter";
 import CapabilityCard from "@/components/capability-card";
-import ScrollReveal from "@/components/scroll-reveal";
 import ProjectCard from "@/components/project-card";
 import { featuredProjects } from "@/data/projects";
 
 const capabilities = [
-  {
-    icon: Smartphone,
-    title: "Native Apple Delivery",
-    description:
-      "Native Apple delivery across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences",
-    tags: ["Swift", "SwiftUI", "Apple Platforms"],
-  },
-  {
-    icon: Server,
-    title: "Backend & APIs",
-    description:
-      "Production full-stack systems with type-safe APIs, serverless infrastructure, and real-time data",
-    tags: ["Next.js", "TanStack Start", "PostgreSQL", "Cloudflare"],
-  },
-  {
-    icon: Sparkles,
-    title: "AI & Automation",
-    description:
-      "AI-powered scraping, TTS narration, algorithmic trading strategies",
-    tags: ["OpenAI", "Effect.js", "Binance API"],
-  },
-  {
-    icon: Cloud,
-    title: "DevOps & Infra",
-    description:
-      "Docker Swarm, reverse proxies, CI/CD, database orchestration",
-    tags: ["Docker", "Nginx", "PostgreSQL", "Prisma"],
-  },
+  { icon: Smartphone, title: "Native Apple delivery", description: "Reading, audio, sync, and companion experiences designed for the Apple platforms people already use.", tags: ["Swift", "SwiftUI", "Apple platforms"] },
+  { icon: Server, title: "Product systems", description: "Operational software with the data model, permissions, workflows, and interfaces that make a business run.", tags: ["Next.js", "TypeScript", "PostgreSQL"] },
+  { icon: Sparkles, title: "AI and automation", description: "Useful automation that turns messy inputs into dependable product capabilities and repeatable operations.", tags: ["OpenAI", "Effect.js", "Serverless"] },
+  { icon: Cloud, title: "Infrastructure that holds", description: "Deployments and integrations shaped for observability, reliability, and the next version of the product.", tags: ["Cloudflare", "Docker", "CI/CD"] },
 ];
 
 const experiences = [
-  {
-    company: "Dabble Lab",
-    position: "Full Stack Developer",
-    period: "Oct 2022 — Present",
-  },
-  {
-    company: "Microverse",
-    position: "Frontend Engineer",
-    period: "2022",
-  },
-  {
-    company: "Sustainable and Greener World",
-    position: "Developer",
-    period: "Jan 2020 — Jan 2021",
-  },
+  ["Dabble Lab", "Full Stack Developer", "Oct 2022 — Present"],
+  ["Microverse", "Frontend Engineer", "2022"],
+  ["Sustainable and Greener World", "Developer", "Jan 2020 — Jan 2021"],
 ];
-
-const topFeatured = featuredProjects.slice(0, 4);
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen">
       <Header />
-      <main className="flex-grow">
-        <PageTransition>
-          {/* Hero */}
-          <section className="container mx-auto px-6 pt-32 pb-20 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="w-20 h-20 rounded-full bg-secondary border-2 border-border mx-auto mb-6 flex items-center justify-center"
-            >
-              <span className="text-2xl font-bold text-muted-foreground">
-                FM
-              </span>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="text-xs uppercase tracking-[3px] text-muted-foreground mb-4"
-            >
-              Full-Stack · Polyglot · Systems Thinker
-            </motion.p>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
-              className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4"
-            >
-              I build complete
-              <br />
-              systems that ship.
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-muted-foreground max-w-md mx-auto mb-10 leading-relaxed"
-            >
-              From a native Apple reading platform to production accounting and inventory
-              systems, picking the right tool for every job.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="flex justify-center gap-10 mb-10"
-            >
-              <StatCounter end={15} suffix="+" label="Projects" />
-              <StatCounter end={6} label="Languages" />
-              <StatCounter end={5} suffix="+" label="Years" />
-              <StatCounter end={2} label="Play Store" />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="flex justify-center gap-4"
-            >
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium text-sm hover:opacity-90 transition-opacity"
-              >
-                View Projects
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 border border-border px-6 py-3 rounded-lg font-medium text-sm text-foreground hover:bg-secondary transition-colors"
-              >
-                Get in Touch
-              </Link>
-            </motion.div>
-          </section>
-
-          {/* Capabilities */}
-          <section className="container mx-auto px-6 pb-20">
-            <ScrollReveal>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground mb-8 text-center">
-                What I Build
-              </h2>
-            </ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-              {capabilities.map((cap, i) => (
-                <CapabilityCard key={cap.title} {...cap} index={i} />
-              ))}
-            </div>
-          </section>
-
-          {/* Selected Work */}
-          <section className="container mx-auto px-6 pb-20">
-            <ScrollReveal>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground mb-8 text-center">
-                Selected Work
-              </h2>
-            </ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {topFeatured.map((project, i) => (
-                <ScrollReveal key={project.id} delay={i * 0.1}>
-                  <ProjectCard project={project} index={i} />
-                </ScrollReveal>
-              ))}
-            </div>
-            <div className="text-center mt-8">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
-              >
-                View All Projects
-                <ArrowRight size={14} />
-              </Link>
-            </div>
-          </section>
-
-          {/* Experience Preview */}
-          <section className="container mx-auto px-6 pb-20">
-            <ScrollReveal>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground mb-8 text-center">
-                Experience
-              </h2>
-            </ScrollReveal>
-            <div className="max-w-2xl mx-auto space-y-4">
-              {experiences.map((exp, i) => (
-                <ScrollReveal key={exp.company} delay={i * 0.1}>
-                  <div className="flex items-baseline justify-between py-3 border-b border-border">
-                    <div>
-                      <span className="font-medium text-foreground">
-                        {exp.position}
-                      </span>
-                      <span className="text-muted-foreground ml-2">
-                        at {exp.company}
-                      </span>
-                    </div>
-                    <span className="text-sm text-muted-foreground whitespace-nowrap ml-4">
-                      {exp.period}
-                    </span>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-            <div className="text-center mt-6">
-              <Link
-                href="/experience"
-                className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
-              >
-                View Full Experience
-                <ArrowRight size={14} />
-              </Link>
-            </div>
-          </section>
-
-          {/* CTA */}
-          <section className="container mx-auto px-6 pb-24">
-            <ScrollReveal>
-              <div className="text-center py-16 border-t border-border">
-                <h2 className="text-2xl font-bold tracking-tight text-foreground mb-4">
-                  Interested in working together?
-                </h2>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium text-sm hover:opacity-90 transition-opacity"
-                >
-                  Get in Touch
-                  <ArrowRight size={16} />
-                </Link>
+      <main>
+        <section className="hero-panel">
+          <div className="site-shell hero-inner">
+            <div>
+              <p className="hero-kicker">Independent product engineer / Kampala, Uganda</p>
+              <h1 className="hero-title">I build <em>systems</em> that ship.</h1>
+              <p className="hero-intro">From the first useful interaction to the infrastructure behind it, I turn ambitious ideas into products people can rely on.</p>
+              <div className="hero-actions">
+                <Link href="/projects" className="button-primary">See the work <ArrowRight size={14} /></Link>
+                <Link href="/contact" className="button-secondary">Start a conversation</Link>
               </div>
-            </ScrollReveal>
-          </section>
-        </PageTransition>
+            </div>
+            <aside className="hero-proof">
+              <p className="hero-proof-label">The point of view</p>
+              <h2>Right tool. Clear system. Real outcome.</h2>
+              <p>Projects change. The practice stays consistent: understand the operation, choose the right constraints, and make the result feel inevitable.</p>
+              <ul className="hero-proof-list">
+                <li>Products shipped <span>15+</span></li>
+                <li>Primary modes <span>Web · Apple · AI</span></li>
+                <li>Current focus <span>End-to-end systems</span></li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section className="site-shell section-block section-rule">
+          <div className="section-heading">
+            <p className="eyebrow">01 / What I build</p>
+            <div><h2>One practice.<br />Many surfaces.</h2><p>I work across the product boundary: shaping the experience, building the system, and carrying it into production.</p></div>
+          </div>
+          <div className="capability-grid">
+            {capabilities.map((cap, index) => <CapabilityCard key={cap.title} {...cap} index={index} />)}
+          </div>
+        </section>
+
+        <section className="work-section section-block section-rule">
+          <div className="site-shell">
+            <div className="section-heading">
+              <p className="eyebrow">02 / Selected work</p>
+              <div><h2>Proof over promises.</h2><p>These are a few shipped systems. The catalog holds the wider range: products, internal tools, experiments that became useful, and the decisions behind them.</p></div>
+            </div>
+            <div className="project-proof-grid">
+              {featuredProjects.slice(0, 3).map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}
+            </div>
+            <p className="catalog-note">{featuredProjects.length} selected projects / a broader catalog is still being built.</p>
+            <Link href="/projects" className="button-secondary" style={{ color: "var(--ink)", borderColor: "var(--line)", marginTop: "1.5rem" }}>Open the full index <ArrowRight size={14} /></Link>
+          </div>
+        </section>
+
+        <section className="experience-strip">
+          <div className="site-shell experience-strip-inner">
+            <div><p className="eyebrow">03 / Experience</p><h2>Work that compounds.</h2></div>
+            <div className="experience-list">
+              {experiences.map(([company, role, period]) => <div className="experience-row" key={company}><div><strong>{role}</strong><span>{company}</span></div><small>{period}</small></div>)}
+              <Link href="/experience" className="button-secondary" style={{ color: "var(--ink)", borderColor: "var(--line)", marginTop: "1.25rem", width: "fit-content" }}>View experience <ArrowRight size={14} /></Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="contact-banner">
+          <div className="site-shell contact-banner-inner">
+            <div><p className="eyebrow eyebrow-light">04 / Next system</p><h2>Have a useful thing in mind?</h2></div>
+            <Link href="/contact" className="button-primary">Let&apos;s talk <ArrowRight size={14} /></Link>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>

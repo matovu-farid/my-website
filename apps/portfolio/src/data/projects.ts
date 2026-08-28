@@ -101,6 +101,7 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/matovu-farid/money-lending",
     liveUrl: "https://money-lending.fidexa.org/home",
     liveLabel: "Production App",
+    imageUrl: "/screenshots/money-lending/landing.png",
     rank: 1.5,
     featured: true,
     year: "2026",
@@ -139,6 +140,7 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/matovu-farid/inventory",
     liveUrl: "https://inventory.fidexa.org/home",
     liveLabel: "Production App",
+    imageUrl: "/screenshots/inventory/dashboard.png",
     rank: 1.7,
     featured: true,
     year: "2026",
@@ -219,8 +221,6 @@ export const projects: Project[] = [
     category: "cross-platform",
     technologies: ["Flutter", "Dart", "Firebase", "Cloud Functions"],
     githubUrl: "https://github.com/matovu-farid/case_medinsurance",
-    imageUrl:
-      "https://raw.githubusercontent.com/matovu-farid/case_medinsurance/master/assets/images/splash.png",
     rank: 4,
     featured: true,
     year: "2022",
@@ -447,10 +447,20 @@ export const projects: Project[] = [
   },
 ];
 
+export const PORTFOLIO_EXCLUDED_IDS = new Set([
+  "painter",
+  "pearl-of-africa-tour",
+  "stocks-app",
+  "space-travellers",
+  "apartment-manager-rails",
+]);
+
 export const featuredProjects = projects
-  .filter((p) => p.featured)
+  .filter((p) => p.featured && !PORTFOLIO_EXCLUDED_IDS.has(p.id))
   .sort((a, b) => a.rank - b.rank);
 
-export const allProjectsSorted = [...projects].sort(
+export const allProjectsSorted = projects
+  .filter((p) => !PORTFOLIO_EXCLUDED_IDS.has(p.id))
+  .sort(
   (a, b) => a.rank - b.rank
-);
+  );
