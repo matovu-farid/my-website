@@ -10,12 +10,18 @@ export async function sendEmail(formData: FormData) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    await resend.emails.send({
-      from: "Portfolio Form <farid@matovu-farid.com>",
-      to: process.env.EMAIL_ADDRESS as string, // Replace with your email
-      subject: "Portfolio Form Submission",
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    const { data, error } = await resend.emails.send({
+      from: "Fidexa Contact <contact@fidexa.org>",
+      to: process.env.EMAIL_ADDRESS as string,
+      replyTo: email,
+      subject: `New inquiry from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
     });
+
+    if (error || !data?.id) {
+      console.error("Error sending email:", error ?? "Resend returned no message id");
+      return { success: false, message: "Failed to send email" };
+    }
 
     return { success: true, message: "Email sent successfully" };
   } catch (error) {

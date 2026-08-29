@@ -10,6 +10,7 @@
   --sand: #e9e0d1;
   --violet: #6f55e8;
   --mint: #36d6bf;
+  --success: #287c5d;
   --slate: #667085;
   --line: rgba(21, 24, 33, .16);
   --line-light: rgba(255, 254, 250, .18);
@@ -192,7 +193,22 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .form-field input, .form-field textarea { width: 100%; border: 1px solid var(--line); border-radius: 0; background: var(--paper); padding: .8rem; color: var(--ink); }
 .form-field textarea { min-height: 160px; resize: vertical; }
 .form-submit { margin-top: 1.2rem; border: 0; cursor: pointer; }
+.form-submit:disabled { cursor: wait; opacity: .72; }
 .form-status { margin: 1rem 0 0; color: var(--slate); font-size: .76rem; line-height: 1.5; }
+.contact-success-overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 1rem; background: rgba(16, 24, 40, .72); animation: contact-success-fade-in .18s ease-out both; }
+.contact-success-modal { display: flex; width: min(100%, 35rem); flex-direction: column; align-items: flex-start; gap: 1rem; border-radius: 1.5rem; background: var(--white); padding: clamp(1.5rem, 4vw, 2.5rem); box-shadow: 0 18px 42px rgba(16, 24, 40, .18); animation: contact-success-rise-in .22s ease-out both; }
+.contact-success-icon { display: grid; width: 3.5rem; height: 3.5rem; place-items: center; border-radius: 999px; background: var(--success); color: var(--white); font-size: 2rem; font-weight: 850; line-height: 1; }
+.contact-success-eyebrow { color: var(--slate); font-size: .75rem; }
+.contact-success-modal h2 { margin: 0; font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 850; letter-spacing: -.07em; line-height: 1.05; }
+.contact-success-modal p:not(.eyebrow) { max-width: 28rem; margin: 0; color: var(--slate); font-size: 1rem; line-height: 1.5; }
+.contact-success-close { min-width: 6rem; margin-top: .25rem; }
+
+@keyframes contact-success-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes contact-success-rise-in { from { opacity: 0; transform: translateY(.75rem) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-success-overlay, .contact-success-modal { animation: none; }
+}
 
 @media (max-width: 900px) {
   .site-shell { width: min(100% - 2.5rem, 720px); }

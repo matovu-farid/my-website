@@ -5,7 +5,7 @@ const root = new URL("..", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const exists = async (path) => access(new URL(path, root)).then(() => true).catch(() => false);
 
-const [css, home, projects, data, card, caseStudy, experience, layout, header, vercelAsset, faviconFile, appIcon, appleIcon] = await Promise.all([
+const [css, home, projects, data, card, caseStudy, experience, layout, header, contact, sendEmail, vercelAsset, faviconFile, appIcon, appleIcon] = await Promise.all([
   read("src/app/globals.css"),
   read("src/app/page.tsx"),
   read("src/app/projects/page.tsx"),
@@ -15,6 +15,8 @@ const [css, home, projects, data, card, caseStudy, experience, layout, header, v
   read("src/app/experience/page.tsx"),
   read("src/app/layout.tsx"),
   read("src/components/header.tsx"),
+  read("src/app/contact/page.tsx"),
+  read("src/actions/send-email.ts"),
   exists("public/vercel.svg"),
   exists("src/app/favicon.ico"),
   exists("src/app/icon.svg"),
@@ -38,6 +40,14 @@ assert.match(experience, /https:\/\/dabblelab\.com\//i, "Dabble Lab experience l
 assert.match(experience, /https:\/\/www\.microverse\.org\//i, "Microverse experience link is missing");
 assert.match(layout, /export const metadata\s*=\s*\{[\s\S]*Farid Matovu/i, "portfolio metadata must be defined in the root layout");
 assert.match(header, /src="\/fidexa-app-icon\.svg"/i, "portfolio header must use the Fidexa mark");
+assert.match(contact, /role="dialog"/i, "contact success must use an accessible dialog");
+assert.match(contact, /Thanks for reaching out\./i, "contact success copy is missing");
+assert.match(contact, /aria-modal="true"/i, "contact success dialog must be modal");
+assert.match(contact, /Escape|keydown/i, "contact success dialog must support keyboard dismissal");
+assert.match(sendEmail, /from:\s*["']Fidexa Contact <contact@fidexa\.org>["']/i, "contact form must send from the verified Fidexa domain");
+assert.match(sendEmail, /replyTo:\s*email/i, "contact form must preserve the sender as reply-to");
+assert.match(sendEmail, /const\s*\{\s*data,\s*error\s*\}\s*=\s*await resend\.emails\.send/i, "contact form must inspect Resend's response");
+assert.match(sendEmail, /if\s*\(error\s*\|\|/i, "contact form must report Resend delivery errors");
 assert.equal(vercelAsset, false, "unused Vercel logo asset must be removed");
 assert.equal(faviconFile, true, "canonical Next.js Fidexa favicon must be available in app/");
 assert.equal(appIcon, true, "canonical Next.js Fidexa app icon must be available in app/");
