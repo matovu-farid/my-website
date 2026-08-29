@@ -111,7 +111,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .project-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: var(--slate); font-size: .58rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
 .project-card h3 { max-width: 18rem; margin: 2.8rem 0 .8rem; font-size: 1.6rem; font-weight: 850; letter-spacing: -.07em; line-height: .98; }
 .project-card p { margin: 0; color: var(--slate); font-size: .82rem; line-height: 1.5; }
-.project-card-links { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: auto; padding-top: 1.4rem; color: var(--violet); font-size: .62rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+.project-card-links { display: flex; align-items: center; flex-wrap: wrap; column-gap: 1rem; row-gap: .75rem; margin-top: auto; padding-top: 1.4rem; color: var(--violet); font-size: .62rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+.project-card-links a { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .35rem; white-space: nowrap; line-height: 1; }
+.project-card-links a svg { display: block; flex: none; }
 .project-card-links a:hover { text-decoration: underline; text-underline-offset: .2rem; }
 .project-card-links a[aria-label] { color: var(--ink); }
 .project-card--featured { grid-column: span 2; }
@@ -181,6 +183,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .detail-card:nth-child(even) { background: var(--sand); }
 .detail-card h2 { margin: 0 0 .8rem; font-size: 2rem; letter-spacing: -.07em; }
 .detail-card p { margin: 0; color: var(--slate); font-size: .88rem; line-height: 1.6; }
+.detail-card-link { display: inline-flex; margin-top: 1.25rem; color: var(--violet); font-size: .62rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; text-decoration: underline; text-underline-offset: .25rem; }
 .contact-form { max-width: 700px; border: 1px solid var(--line); background: var(--white); padding: clamp(1.25rem, 4vw, 3rem); }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .form-field { display: grid; gap: .45rem; }
@@ -228,6 +231,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .filter-pill { flex: 0 0 auto; }
   .case-study-main h1 { font-size: 4.25rem; }
   .case-study-aside .route-list { grid-template-columns: 1fr; }
+  .detail-layout { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
   .form-field-wide { grid-column: auto; }
   .footer-inner { align-items: flex-start; flex-direction: column; }
