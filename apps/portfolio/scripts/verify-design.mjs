@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 
 const root = new URL("..", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
+const exists = async (path) => access(new URL(path, root)).then(() => true).catch(() => false);
 
-const [css, home, projects, data, card, caseStudy, experience] = await Promise.all([
+const [css, home, projects, data, card, caseStudy, experience, layout, header, vercelAsset, oldFavicon] = await Promise.all([
   read("src/app/globals.css"),
   read("src/app/page.tsx"),
   read("src/app/projects/page.tsx"),
@@ -12,6 +13,10 @@ const [css, home, projects, data, card, caseStudy, experience] = await Promise.a
   read("src/components/project-card.tsx"),
   read("src/app/projects/[id]/case-study-content.tsx"),
   read("src/app/experience/page.tsx"),
+  read("src/app/layout.tsx"),
+  read("src/components/header.tsx"),
+  exists("public/vercel.svg"),
+  exists("src/app/favicon.ico"),
 ]);
 
 assert.match(css, /--ink:\s*#151821/i, "portfolio ink token is missing");
@@ -29,6 +34,10 @@ assert.match(experience, /Founder.*Lead Developer/i, "Fidexa experience role is 
 assert.match(experience, /https:\/\/www\.fidexa\.org\//i, "Fidexa experience link is missing");
 assert.match(experience, /https:\/\/dabblelab\.com\//i, "Dabble Lab experience link is missing");
 assert.match(experience, /https:\/\/www\.microverse\.org\//i, "Microverse experience link is missing");
+assert.match(layout, /icons:\s*\{[\s\S]*fidexa-app-icon\.svg/i, "portfolio metadata must use the Fidexa icon");
+assert.match(header, /src="\/fidexa-app-icon\.svg"/i, "portfolio header must use the Fidexa mark");
+assert.equal(vercelAsset, false, "unused Vercel logo asset must be removed");
+assert.equal(oldFavicon, false, "default Vercel favicon must be removed");
 assert.match(css, /@media \(max-width:\s*620px\)[\s\S]*\.detail-layout\s*\{\s*grid-template-columns:\s*1fr;/i, "experience cards must stack on mobile");
 assert.match(
   css,

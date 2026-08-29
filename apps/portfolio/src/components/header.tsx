@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const links = [
   { href: "/", label: "Home" },
@@ -16,9 +17,9 @@ export default function Header() {
   return (
     <header className="site-header">
       <nav className="site-shell site-header-inner" aria-label="Primary navigation">
-        <Link href="/" className="brand-lockup" aria-label="Farid Matovu home">
-          <span className="brand-mark" aria-hidden="true">FM</span>
-          <span><span>Farid Matovu</span><span className="brand-meta">Systems that ship</span></span>
+        <Link href="/" className="brand-lockup" aria-label="Fidexa studio home">
+          <Image className="brand-mark" src="/fidexa-app-icon.svg" alt="" width={32} height={32} priority />
+          <span><span>Fidexa</span><span className="brand-meta">Farid Matovu · Software studio</span></span>
         </Link>
         <ul className="header-nav">
           {links.map(({ href, label }) => {
