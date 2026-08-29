@@ -5,7 +5,7 @@ const root = new URL("..", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const exists = async (path) => access(new URL(path, root)).then(() => true).catch(() => false);
 
-const [css, home, projects, data, card, caseStudy, experience, layout, header, vercelAsset, oldFavicon] = await Promise.all([
+const [css, home, projects, data, card, caseStudy, experience, layout, header, vercelAsset, oldFavicon, faviconFallback, appleIcon] = await Promise.all([
   read("src/app/globals.css"),
   read("src/app/page.tsx"),
   read("src/app/projects/page.tsx"),
@@ -17,6 +17,8 @@ const [css, home, projects, data, card, caseStudy, experience, layout, header, v
   read("src/components/header.tsx"),
   exists("public/vercel.svg"),
   exists("src/app/favicon.ico"),
+  exists("public/favicon.ico"),
+  exists("public/apple-touch-icon.png"),
 ]);
 
 assert.match(css, /--ink:\s*#151821/i, "portfolio ink token is missing");
@@ -38,6 +40,8 @@ assert.match(layout, /icons:\s*\{[\s\S]*fidexa-app-icon\.svg/i, "portfolio metad
 assert.match(header, /src="\/fidexa-app-icon\.svg"/i, "portfolio header must use the Fidexa mark");
 assert.equal(vercelAsset, false, "unused Vercel logo asset must be removed");
 assert.equal(oldFavicon, false, "default Vercel favicon must be removed");
+assert.equal(faviconFallback, true, "Fidexa favicon fallback must be available at /favicon.ico");
+assert.equal(appleIcon, true, "Fidexa Apple touch icon must be available");
 assert.match(css, /@media \(max-width:\s*620px\)[\s\S]*\.detail-layout\s*\{\s*grid-template-columns:\s*1fr;/i, "experience cards must stack on mobile");
 assert.match(
   css,

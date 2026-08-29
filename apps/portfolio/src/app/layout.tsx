@@ -8,9 +8,12 @@ export const metadata = {
   description:
     "Farid Matovu builds products, platforms, and the systems between them.",
   icons: {
-    icon: "/fidexa-app-icon.svg",
-    shortcut: "/fidexa-app-icon.svg",
-    apple: "/fidexa-app-icon.svg",
+    icon: [
+      { url: "/favicon.ico", type: "image/png", sizes: "32x32" },
+      { url: "/fidexa-app-icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
