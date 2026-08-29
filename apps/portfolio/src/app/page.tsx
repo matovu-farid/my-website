@@ -16,6 +16,7 @@ const capabilities = [
 ];
 
 const experiences = [
+  ["Fidexa LLC", "Founder / Lead Developer", "Apr 2025 — Present"],
   ["Dabble Lab", "Full Stack Developer", "Oct 2022 — Present"],
   ["Microverse", "Frontend Engineer", "2022"],
   ["Sustainable and Greener World", "Developer", "Jan 2020 — Jan 2021"],
