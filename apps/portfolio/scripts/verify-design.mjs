@@ -5,7 +5,7 @@ const root = new URL("..", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const exists = async (path) => access(new URL(path, root)).then(() => true).catch(() => false);
 
-const [css, home, projects, data, card, caseStudy, experience, layout, header, vercelAsset, oldFavicon, faviconFallback, appleIcon] = await Promise.all([
+const [css, home, projects, data, card, caseStudy, experience, layout, header, vercelAsset, faviconFile, appIcon, appleIcon] = await Promise.all([
   read("src/app/globals.css"),
   read("src/app/page.tsx"),
   read("src/app/projects/page.tsx"),
@@ -17,8 +17,8 @@ const [css, home, projects, data, card, caseStudy, experience, layout, header, v
   read("src/components/header.tsx"),
   exists("public/vercel.svg"),
   exists("src/app/favicon.ico"),
-  exists("public/favicon.ico"),
-  exists("public/apple-touch-icon.png"),
+  exists("src/app/icon.svg"),
+  exists("src/app/apple-icon.png"),
 ]);
 
 assert.match(css, /--ink:\s*#151821/i, "portfolio ink token is missing");
@@ -36,12 +36,12 @@ assert.match(experience, /Founder.*Lead Developer/i, "Fidexa experience role is 
 assert.match(experience, /https:\/\/www\.fidexa\.org\//i, "Fidexa experience link is missing");
 assert.match(experience, /https:\/\/dabblelab\.com\//i, "Dabble Lab experience link is missing");
 assert.match(experience, /https:\/\/www\.microverse\.org\//i, "Microverse experience link is missing");
-assert.match(layout, /icons:\s*\{[\s\S]*fidexa-app-icon\.svg/i, "portfolio metadata must use the Fidexa icon");
+assert.match(layout, /export const metadata\s*=\s*\{[\s\S]*Farid Matovu/i, "portfolio metadata must be defined in the root layout");
 assert.match(header, /src="\/fidexa-app-icon\.svg"/i, "portfolio header must use the Fidexa mark");
 assert.equal(vercelAsset, false, "unused Vercel logo asset must be removed");
-assert.equal(oldFavicon, false, "default Vercel favicon must be removed");
-assert.equal(faviconFallback, true, "Fidexa favicon fallback must be available at /favicon.ico");
-assert.equal(appleIcon, true, "Fidexa Apple touch icon must be available");
+assert.equal(faviconFile, true, "canonical Next.js Fidexa favicon must be available in app/");
+assert.equal(appIcon, true, "canonical Next.js Fidexa app icon must be available in app/");
+assert.equal(appleIcon, true, "canonical Next.js Fidexa Apple icon must be available in app/");
 assert.match(css, /@media \(max-width:\s*620px\)[\s\S]*\.detail-layout\s*\{\s*grid-template-columns:\s*1fr;/i, "experience cards must stack on mobile");
 assert.match(
   css,
