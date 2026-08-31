@@ -203,11 +203,11 @@ export const projects: Project[] = [
     featured: true,
     year: "2025",
     narrative:
-      "I needed an AI-powered scraping tool and realized it should be three composable pieces — a dashboard for managing operations, an npm library others could use, and a serverless backend for processing. Each piece works independently but they compose into a complete product.",
+      "I needed an AI-powered scraping tool and realized it should be three composable pieces — a dashboard for managing operations, a TypeScript client package others could use, and a serverless backend for processing. Each piece works independently but they compose into a complete product.",
     keyDecisions: [
-      "Decomposed into 3 independent services: dashboard, npm package (scrap-ai), and Lambda backend",
+      "Decomposed into 3 independent services: dashboard, TypeScript client package (scrap-ai), and Lambda backend",
       "Async callback architecture instead of polling for long-running scrape operations",
-      "Published scrap-ai to npm with Zod schema validation for type-safe extraction",
+      "Used Zod schema validation in the client package for type-safe extraction",
       "Webhook verification using timing-safe signature comparison for security",
     ],
   },
