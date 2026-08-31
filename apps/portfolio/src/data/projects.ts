@@ -186,9 +186,9 @@ export const projects: Project[] = [
     id: "scrap-platform",
     title: "AI Scraping Ecosystem",
     description:
-      "Full AI-powered scraping product: interactive Next.js dashboard, published npm library (scrap-ai), and serverless AWS Lambda backend.",
+      "Full AI-powered scraping product: interactive Next.js dashboard, TypeScript client package (scrap-ai), and serverless AWS Lambda backend.",
     longDescription:
-      "A complete AI scraping ecosystem comprising three projects: a Next.js dashboard for managing scraping operations with API key management, a published npm package (scrap-ai) providing AI-powered data extraction with webhook support and Zod schema validation, and a serverless backend using AWS Lambda for processing webhooks and PDF conversion.",
+      "A complete AI scraping ecosystem comprising three projects: a Next.js dashboard for managing scraping operations with API key management, a TypeScript client package (scrap-ai) providing AI-powered data extraction with webhook support and Zod schema validation, and a serverless backend using AWS Lambda for processing webhooks and PDF conversion.",
     category: "ai-automation",
     technologies: [
       "Next.js",
