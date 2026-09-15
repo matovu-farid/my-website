@@ -46,9 +46,9 @@ export const projects: Project[] = [
     id: "rishi",
     title: "Rishi",
     description:
-      "Production Apple reading platform for EPUB and PDF books, with read-aloud, highlights, sync, sharing, and AI chat grounded in the book you are reading.",
+      "Apple reading platform for EPUB and PDF books, publicly available on the App Store for iPhone, iPad, and Mac, with read-aloud, highlights, sync, sharing, and AI chat grounded in the book you are reading.",
     longDescription:
-      "Rishi is an Apple-only reading platform across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences. It supports EPUB and PDF reading, read-aloud, highlights, synchronized progress, sharing, and AI chat grounded in the current book. Android support is planned, but there is no Android app today.",
+      "Rishi is an Apple reading platform for EPUB and PDF books, publicly available on the App Store for iPhone, iPad, and Mac. The codebase also includes CarPlay and connected Apple Watch integrations; they are codebase integrations, not public releases. It supports read-aloud, highlights, synchronized progress, sharing, and AI chat grounded in the current book. Android is planned, not released.",
     category: "native-apps",
     technologies: [
       "Swift",
@@ -67,13 +67,13 @@ export const projects: Project[] = [
     featured: true,
     year: "2026",
     narrative:
-      "I built Rishi around the way people actually read across Apple devices: open an EPUB or PDF, listen with read-aloud, save highlights, sync progress, share passages, and ask questions in an AI chat grounded in the current book. The production release now spans iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences. Android is planned for a later phase.",
+      "I built Rishi around the way people actually read across Apple devices: open an EPUB or PDF, listen with read-aloud, save highlights, sync progress, share passages, and ask questions in an AI chat grounded in the current book. Rishi is publicly available on the App Store for iPhone, iPad, and Mac. CarPlay and connected Apple Watch are codebase integrations, not public releases. Android is planned, not released.",
     keyDecisions: [
-      "Native Apple delivery keeps reading, audio, sharing, and device handoff aligned across iPhone, iPad, Mac, CarPlay, and connected Apple Watch experiences",
+      "Native Apple delivery keeps reading, audio, sharing, and device handoff aligned across public iPhone, iPad, and Mac releases; CarPlay and connected Apple Watch are codebase integrations",
       "EPUB and PDF support share one reading model for progress, highlights, and synchronized state",
       "Read-aloud runs as a first-class reading mode, with audio controls available while the user continues through the book",
       "AI chat is grounded in the current book so answers stay tied to the reader's source material",
-      "Android remains planned expansion rather than a current platform commitment",
+      "Android is planned, not released",
     ],
   },
   {
@@ -82,7 +82,7 @@ export const projects: Project[] = [
     description:
       "Production fintech platform for running a money-lending business end to end: loans, daily interest, investor capital, watchlists, P&L, and Balance Sheet.",
     longDescription:
-      "A full-stack lending operations product. Issues loans with daily reducing-balance interest, collects repayments with printable receipts, tracks investor (creditor) capital, auto-flags borrowers at risk, records expenses and income, and generates dashboards plus P&L and Balance Sheet exports. Sensitive actions go through a review-then-confirm approvals workflow before posting.",
+      "A production lending operations system for a customer business, built around a ledger-based model and exact decimal money math for reducing-balance interest, payment allocation, investor capital, approvals, role-based access, audit trails, and financial exports.",
     category: "web-apps",
     technologies: [
       "Next.js 16",
@@ -121,7 +121,7 @@ export const projects: Project[] = [
     description:
       "Multi-module inventory platform for a clothing import / retail business. Supply, Store, and Shop apps share one ledger with double-entry bookkeeping for loss detection at every stage.",
     longDescription:
-      "An end-to-end inventory and trade management system that tracks goods from international procurement (China buying trips) through warehousing to retail sale across multiple shops. Built as one TanStack Start codebase serving three role-based front ends (Supply, Store, Shop) on top of a shared database and accounting engine. Double-entry bookkeeping with a shared ledger surfaces loss at any stage of the supply chain.",
+      "A production inventory and trade system for an import and retail business. It models procurement through retail in Supply, Store, and Shop modules sharing a double-entry ledger, with multi-currency costing, stock control, point of sale, loss detection, and audit trails.",
     category: "web-apps",
     technologies: [
       "TanStack Start",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     featured: true,
     year: "2026",
     narrative:
-      "The business had 15 years of buying trips tracked in a single Excel sheet (gross_profit.xlsx, 47 routes from 2011 to 2026). The brief was to move that operation into a system without losing the institutional knowledge baked into the spreadsheet. I derived the schema and accounting rules directly from the Excel, then split the UI into three role-based modules sharing a single ledger so loss could be detected at any stage of the supply chain.",
+      "The business had records from 2011 to 2026 tracked in a single Excel sheet (gross_profit.xlsx, 47 routes). The brief was to move that operation into a system without losing the institutional knowledge baked into the spreadsheet. I derived the schema and accounting rules directly from the Excel, then split the UI into three role-based modules sharing a single ledger so loss could be detected at any stage of the supply chain.",
     keyDecisions: [
       "One codebase, three role-based modules (Supply, Store, Shop) sharing a single accounting engine, so loss is visible at every transition",
       "Double-entry bookkeeping enforced at the server function layer, not the UI, so the ledger stays sound regardless of client",
@@ -304,7 +304,7 @@ export const projects: Project[] = [
     id: "book-reader",
     title: "Book Reader",
     description:
-      "Earlier desktop EPUB reading prototype with AI-powered narration, smart audio caching, and paragraph highlighting. It preceded the current Apple Rishi product.",
+      "Earlier desktop EPUB reading prototype with AI-powered narration, smart audio caching, and paragraph highlighting.",
     longDescription:
       "An Electron desktop application with React and TypeScript for reading EPUB books. Features text-to-speech narration powered by OpenAI's TTS API with smart audio caching, paragraph highlighting during narration, and auto page navigation.",
     category: "cross-platform",

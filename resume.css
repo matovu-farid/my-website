@@ -1,6 +1,6 @@
 @page {
   size: Letter;
-  margin: 0.5in 0.65in;
+  margin: 0.55in 0.65in 0.6in;
 }
 
 /* Hide pandoc's auto title block — keep PDF metadata title but suppress visible duplicate */
@@ -13,99 +13,132 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Inter", Arial, sans-serif;
-  font-size: 9.5pt;
-  line-height: 1.3;
-  color: #1a1a1a;
+  font-size: 11pt;
+  line-height: 1.48;
+  color: #17212b;
   -webkit-font-smoothing: antialiased;
 }
 
 /* Name */
 h1 {
-  font-size: 22pt;
+  font-size: 27pt;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 2pt 0;
-  color: #0a0a0a;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  margin: 0 0 5pt 0;
+  color: #102a43;
 }
 
 /* Tagline directly under name */
 h1 + p {
-  margin: 0 0 3pt 0;
-  font-size: 10.5pt;
-  font-weight: 600;
-  color: #2a2a2a;
+  margin: 0 0 6pt 0;
+  font-size: 12.5pt;
+  line-height: 1.28;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #0e7490;
 }
 
 /* Contact line */
 h1 + p + p {
-  margin: 0 0 8pt 0;
-  font-size: 9pt;
-  color: #555;
+  margin: 0 0 2pt 0;
+  font-size: 10pt;
+  line-height: 1.48;
+  color: #52606d;
 }
 
-/* First hr after contact = subtle divider */
+/* Links get their own line so the header remains scannable. */
+h1 + p + p + p {
+  margin: 0 0 10pt 0;
+  font-size: 10pt;
+  line-height: 1.48;
+  color: #52606d;
+}
+
+/* Header divider */
 hr {
   border: none;
-  border-top: 1px solid #d4d4d4;
-  margin: 6pt 0;
+  border-top: 1.5px solid #b8c7d1;
+  margin: 10pt 0 8pt;
 }
 
 /* Section headings (Summary, Experience, etc.) */
 h2 {
-  font-size: 10.5pt;
+  font-size: 13.5pt;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #0a0a0a;
-  margin: 8pt 0 3pt 0;
-  padding-bottom: 2pt;
-  border-bottom: 1px solid #d4d4d4;
+  /* Keep headings visually distinct without inserting spaces into ATS text extraction. */
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: #0e5366;
+  margin: 17pt 0 7pt 0;
+  padding: 0 0 6pt 0;
+  border-bottom: 1.5px solid #8fb3bf;
 }
 
 /* Subsection headings (job titles, project titles) */
 h3 {
-  font-size: 10.5pt;
+  font-size: 12pt;
   font-weight: 700;
-  margin: 5pt 0 1pt 0;
-  color: #111;
+  line-height: 1.25;
+  margin: 10pt 0 2pt 0;
+  color: #102a43;
 }
 
 /* Italic line immediately after h3 = dates / tech stack */
 h3 + p em:only-child,
 h3 + p:has(em) {
-  color: #555;
-  font-size: 9pt;
+  color: #52606d;
+  font-size: 10pt;
+  line-height: 1.36;
 }
 
 h3 + p {
-  margin: 0 0 3pt 0;
-  font-size: 9pt;
-  color: #555;
+  margin: 0 0 5pt 0;
+  font-size: 10pt;
+  line-height: 1.36;
+  color: #52606d;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h3 + p strong {
+  color: #52606d;
+  font-weight: 600;
 }
 
 /* Body paragraph after the italic meta line */
 h3 + p + p {
-  margin: 1pt 0 3pt 0;
-  font-size: 9.5pt;
-  color: #1a1a1a;
+  margin: 4pt 0 7pt 0;
+  font-size: 11pt;
+  line-height: 1.48;
+  color: #17212b;
+  page-break-after: avoid;
+  break-after: avoid;
 }
 
 p {
-  margin: 2pt 0;
+  margin: 6pt 0;
 }
 
 ul {
-  margin: 2pt 0;
-  padding-left: 16pt;
+  margin: 5pt 0 9pt;
+  padding-left: 20pt;
+  list-style-type: disc;
 }
 
 li {
-  margin: 1pt 0;
+  margin: 4pt 0;
+  padding-left: 2pt;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
+li::marker { color: #0e7490; }
+
 strong {
-  font-weight: 600;
-  color: #0a0a0a;
+  font-weight: 700;
+  color: #102a43;
 }
 
 em {
@@ -113,16 +146,16 @@ em {
 }
 
 a {
-  color: #1d4ed8;
+  color: #0b6e8a;
   text-decoration: none;
-  border-bottom: 0.5px solid #93c5fd;
+  border-bottom: 0.5px solid #9bc4cf;
 }
 
-a:hover { color: #1e40af; }
+a:hover { color: #0e5366; }
 
 code {
   font-family: "SF Mono", Menlo, Consolas, monospace;
-  font-size: 9pt;
+  font-size: 10pt;
   background: #f2f2f2;
   padding: 0 3px;
   border-radius: 2px;
@@ -130,11 +163,18 @@ code {
 
 /* Final italic footer */
 body > p:last-child {
-  margin-top: 6pt;
-  font-size: 9pt;
-  color: #555;
+  margin-top: 10pt;
+  font-size: 10pt;
+  color: #52606d;
 }
 
 /* Avoid page-break orphans */
 h2, h3 { page-break-after: avoid; break-after: avoid; }
+h2 + p, h2 + ul, h2 + h3, h3, h3 + p, h3 + p + p { page-break-before: avoid; }
+h3 + p + ul { page-break-before: avoid; break-before: avoid; }
 ul, p { page-break-inside: avoid; break-inside: avoid; }
+
+.page-break-before { page-break-before: always; break-before: page; }
+
+/* Let production work flow naturally; a forced break can create an unnecessary third page. */
+h2#selected-production-work { page-break-before: auto; break-before: auto; }

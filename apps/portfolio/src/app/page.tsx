@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Cloud, Server, Smartphone, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight, Cloud, Server, Smartphone, Sparkles } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import CapabilityCard from "@/components/capability-card";
@@ -16,10 +16,11 @@ const capabilities = [
 ];
 
 const experiences = [
-  ["Fidexa LLC", "Founder / Lead Developer", "Apr 2025 — Present"],
-  ["Dabble Lab", "Full Stack Developer", "Oct 2022 — Present"],
-  ["Microverse", "Frontend Engineer", "2022"],
-  ["Sustainable and Greener World", "Developer", "Jan 2020 — Jan 2021"],
+  ["Fidexa LLC", "Founder and Product Engineer", "Apr 2025 — Present"],
+  ["Dabble Lab", "Full-Stack Developer", "Oct 2022 — Present"],
+  ["Microverse", "Code Reviewer and Student Mentor", "Jan 2022 — Oct 2022"],
+  ["FEMME Agencies", "Software Developer", "Jul 2018 — Jan 2021"],
+  ["Sustainable and Greener World", "Web Developer", "Jan 2020 — Jan 2021"],
 ];
 
 export default function Home() {
@@ -30,22 +31,23 @@ export default function Home() {
         <section className="hero-panel">
           <div className="site-shell hero-inner">
             <div>
-              <p className="hero-kicker">Independent product engineer / Kampala, Uganda</p>
+              <p className="hero-kicker">Senior Full-Stack Product Engineer / Kampala, Uganda · GMT+3</p>
               <h1 className="hero-title">I build <em>systems</em> that ship.</h1>
-              <p className="hero-intro">From the first useful interaction to the infrastructure behind it, I turn ambitious ideas into products people can rely on.</p>
+              <p className="hero-intro">Senior Full-Stack Product Engineer with 7+ years of non-overlapping professional software delivery. I build operational and financial production systems with TypeScript, React, Node.js, and PostgreSQL—and I&apos;m available for senior remote product and full-stack roles.</p>
               <div className="hero-actions">
                 <Link href="/projects" className="button-primary">See the work <ArrowRight size={14} /></Link>
-                <Link href="/contact" className="button-secondary">Start a conversation</Link>
+                <a href="/Farid-Matovu-Resume.pdf" className="button-secondary" download aria-label="Download Farid Matovu's resume as a PDF">Download résumé <ArrowDown size={14} aria-hidden="true" /></a>
               </div>
             </div>
             <aside className="hero-proof">
-              <p className="hero-proof-label">The point of view</p>
-              <h2>Right tool. Clear system. Real outcome.</h2>
-              <p>Projects change. The practice stays consistent: understand the operation, choose the right constraints, and make the result feel inevitable.</p>
+              <p className="hero-proof-label">The work in brief</p>
+              <h2>Product engineering from model to production.</h2>
+              <p>Clear ownership across the product boundary: the workflow, the system behind it, and the production responsibility that follows.</p>
               <ul className="hero-proof-list">
-                <li>Products shipped <span>15+</span></li>
-                <li>Primary modes <span>Web · Apple · AI</span></li>
-                <li>Current focus <span>End-to-end systems</span></li>
+                <li>Delivery <span>7+ years of non-overlapping professional software delivery</span></li>
+                <li>Core stack <span>TypeScript · React · Node.js · PostgreSQL</span></li>
+                <li>Working from <span>Kampala, Uganda · GMT+3</span></li>
+                <li>Availability <span>Senior remote product / full-stack roles</span></li>
               </ul>
             </aside>
           </div>

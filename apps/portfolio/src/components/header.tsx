@@ -17,9 +17,9 @@ export default function Header() {
   return (
     <header className="site-header">
       <nav className="site-shell site-header-inner" aria-label="Primary navigation">
-        <Link href="/" className="brand-lockup" aria-label="Fidexa studio home">
+        <Link href="/" className="brand-lockup" aria-label="Farid Matovu portfolio home">
           <Image className="brand-mark" src="/fidexa-app-icon.svg" alt="" width={32} height={32} priority />
-          <span><span>Fidexa</span><span className="brand-meta">Farid Matovu · Software studio</span></span>
+          <span><span>Fidexa</span><span className="brand-meta">Farid Matovu · Product engineer</span></span>
         </Link>
         <ul className="header-nav">
           {links.map(({ href, label }) => {
@@ -32,7 +32,7 @@ export default function Header() {
             );
           })}
         </ul>
-        <span className="header-availability"><span className="status-dot" aria-hidden="true" /> Available for selected work</span>
+        <span className="header-availability"><span className="status-dot" aria-hidden="true" /> Available for senior remote roles</span>
       </nav>
     </header>
   );
