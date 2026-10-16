@@ -101,8 +101,8 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
                   <h2 id="case-study-contact-title">Need this kind of ownership on your team?</h2>
                   <p>I&apos;m open to senior remote product and full-stack engineering roles.</p>
                   <div className="case-study-contact-actions">
-                    <Link href="/contact" className="button-primary">Discuss a similar role</Link>
-                    <a href={site.resumePath} download>Download résumé (PDF)</a>
+                    <Link href="/contact" className="button-primary" data-analytics-placement="case_study">Discuss a similar role</Link>
+                    <a href={site.resumePath} download data-analytics-placement="case_study">Download résumé (PDF)</a>
                   </div>
                 </section>
               </>

@@ -80,7 +80,7 @@ export default function Contact() {
                 <h2>Start a conversation.</h2>
                 <p>Based in {site.location} ({site.timezone}). {site.availability}.</p>
                 <p>Hiring? Share the role, what the team is building, and any location or time-zone requirements. Product and consulting inquiries are welcome too.</p>
-                <ul className="contact-links" aria-label="Direct contact and profile">
+                <ul className="contact-links" aria-label="Direct contact and profile" data-analytics-placement="contact">
                   {/* Authored public contact data only. Preserve this link through Cloudflare's email rewrite. */}
                   <li dangerouslySetInnerHTML={{ __html: `<!--email_off--><a href="mailto:${site.email}">Email ${site.email}</a><!--/email_off-->` }} />
                   <li><a href={site.linkedin}>Connect on LinkedIn</a></li>

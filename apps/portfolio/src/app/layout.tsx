@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
+import EngagementAnalytics from "@/components/engagement-analytics";
+import { allProjectsSorted } from "@/data/projects";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +29,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
+        <EngagementAnalytics config={{
+          enabled: process.env.VERCEL_ENV === "production",
+          token: process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN ?? "",
+          host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "",
+          caseStudyIds: allProjectsSorted.filter((project) => project.narrative).map((project) => project.id),
+        }} />
       </body>
     </html>
   );

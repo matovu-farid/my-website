@@ -35,7 +35,7 @@ export default function Home() {
               <p className="hero-intro">I build operational and financial production systems with TypeScript, React, Node.js, and PostgreSQL. From the data model to the interface, I carry the work into production.</p>
               <div className="hero-actions">
                 <Link href="/projects" className="button-primary">See the work <ArrowRight size={14} /></Link>
-                <a href="/Farid-Matovu-Resume.pdf" className="button-secondary" download aria-label="Download Farid Matovu's resume as a PDF">Download résumé <ArrowDown size={14} aria-hidden="true" /></a>
+                <a href="/Farid-Matovu-Resume.pdf" className="button-secondary" download data-analytics-placement="home_hero" aria-label="Download Farid Matovu's resume as a PDF">Download résumé <ArrowDown size={14} aria-hidden="true" /></a>
               </div>
             </div>
             <Link href="/projects/rishi" className="hero-product" aria-label="Case study: Rishi">
@@ -81,7 +81,7 @@ export default function Home() {
         <section className="contact-banner">
           <div className="site-shell contact-banner-inner">
             <div><h2>Have a useful thing in mind?</h2></div>
-            <Link href="/contact" className="button-primary">Let&apos;s talk <ArrowRight size={14} /></Link>
+            <Link href="/contact" className="button-primary" data-analytics-placement="home_contact">Let&apos;s talk <ArrowRight size={14} /></Link>
           </div>
         </section>
       </main>
