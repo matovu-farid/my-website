@@ -22,4 +22,6 @@ The three new HTTP checks failed against the previous implementation, then passe
 
 Browser checks covered desktop and 393px phone layouts, native required-field and email validation, the case-study contact link, and browser error logs. No contact message was sent. Email delivery and the resulting success dialog were not exercised against the external mail service.
 
+The first production audit passed 27 of 28 checks: Cloudflare Email Address Obfuscation rewrote the public mailto anchor. Apply the [documented per-address HTML opt-out](https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/#prevent-cloudflare-from-obfuscating-email) around that authored contact link so readers without JavaScript can use it. The direct-link assertion remains unchanged and must pass against the final deployment.
+
 Preserve unrelated local changes outside the release commit.

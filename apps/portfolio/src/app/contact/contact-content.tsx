@@ -67,7 +67,8 @@ export default function Contact() {
                 <p>Based in {site.location} ({site.timezone}). {site.availability}.</p>
                 <p>Hiring? Share the role, what the team is building, and any location or time-zone requirements. Product and consulting inquiries are welcome too.</p>
                 <ul className="contact-links" aria-label="Direct contact and profile">
-                  <li><a href={`mailto:${site.email}`}>Email {site.email}</a></li>
+                  {/* Authored public contact data only. Preserve this link through Cloudflare's email rewrite. */}
+                  <li dangerouslySetInnerHTML={{ __html: `<!--email_off--><a href="mailto:${site.email}">Email ${site.email}</a><!--/email_off-->` }} />
                   <li><a href={site.linkedin}>Connect on LinkedIn</a></li>
                   <li><a href={site.resumePath} download>Download résumé (PDF)</a></li>
                 </ul>
