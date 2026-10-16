@@ -30,6 +30,7 @@ export function agentGuide(full = false): string {
       if (project.narrative) lines.push(`- [Case study](${site.url}/projects/${project.id}).`, "", project.narrative);
       else lines.push(`- [Catalog record](${new URL(projectRecordHref(project), site.url).href}).`);
       if (project.story) lines.push("", `Situation: ${project.story.situation}`, `My approach: ${project.story.decision}`, `Delivered: ${project.story.delivered}`, `Media provenance: ${project.story.caption}`);
+      if (project.caseStudy) lines.push("", `My role: ${project.caseStudy.role}`, `Delivery: ${project.caseStudy.status}`, `My contribution: ${project.caseStudy.contribution}`, "Delivered capabilities:", ...project.caseStudy.delivered.map((item) => `- ${item}`), `Evidence and scope: ${project.caseStudy.evidence}`);
       if (project.keyDecisions) lines.push("", "Engineering decisions:", ...project.keyDecisions.map((decision) => `- ${decision}`));
       for (const [label, url] of [["Source repository", project.githubUrl], ["Public product or showcase", project.liveUrl], ["Product website", project.productUrl], ["App Store", project.appStoreUrl], ["Walkthrough", project.videoUrl]]) {
         if (url) lines.push(`- [${label}](${url}).`);

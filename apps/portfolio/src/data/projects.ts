@@ -33,6 +33,13 @@ export interface Project {
   rank: number;
   featured: boolean;
   narrative?: string;
+  caseStudy?: {
+    role: string;
+    status: string;
+    contribution: string;
+    delivered: string[];
+    evidence: string;
+  };
   keyDecisions?: string[];
   year?: string;
   archived?: boolean;
@@ -87,13 +94,23 @@ export const projects: Project[] = [
     featured: true,
     year: "2026",
     narrative:
-      "I built Rishi around the way people actually read across Apple devices: open an EPUB or PDF, listen with read-aloud, save highlights, sync progress, share passages, and ask questions in an AI chat grounded in the current book. Rishi is publicly available on the App Store for iPhone, iPad, and Mac. CarPlay and connected Apple Watch are codebase integrations, not public releases. Android is planned, not released.",
+      "Reading a book involves more than displaying its pages. A reader may switch from reading to listening, save a passage, move to another device, or ask a question about the text. I built Rishi to keep those activities connected around the EPUB or PDF already being read.",
+    caseStudy: {
+      role: "Product engineer · native Apple development",
+      status: "App Store for iPhone, iPad, and Mac",
+      contribution: "I built the native Apple reading product with Swift and SwiftUI, connecting EPUB/PDF reading, read-aloud, highlights, synchronized progress, sharing, and book-grounded AI chat. My work includes taking the product through to its App Store release.",
+      delivered: [
+        "An EPUB and PDF library and reading experience available for iPhone, iPad, and Mac.",
+        "Read-aloud, saved highlights, synchronized reading progress, and passage sharing within the same product.",
+        "AI questions grounded in the current book, keeping the source material central to the conversation.",
+      ],
+      evidence: "The App Store listing is the public release evidence; the walkthrough shows the reading product in use. CarPlay and connected Apple Watch are codebase integrations, not public releases. Android is planned, not released.",
+    },
     keyDecisions: [
-      "Native Apple delivery keeps reading, audio, sharing, and device handoff aligned across public iPhone, iPad, and Mac releases; CarPlay and connected Apple Watch are codebase integrations",
-      "EPUB and PDF support share one reading model for progress, highlights, and synchronized state",
-      "Read-aloud runs as a first-class reading mode, with audio controls available while the user continues through the book",
-      "AI chat is grounded in the current book so answers stay tied to the reader's source material",
-      "Android is planned, not released",
+      "Native Apple delivery: Swift and SwiftUI keep reading, audio, and sharing aligned with the platforms where the product ships. The public release scope is iPhone, iPad, and Mac.",
+      "A shared reading model: EPUB and PDF support use the same concepts for progress, highlights, and synchronized state, giving the surrounding product a consistent way to track a reader’s place and notes.",
+      "Listening belongs in the reader: read-aloud is a first-class reading mode, with audio controls available while the user continues through the book.",
+      "Book-grounded AI: chat uses the current book as its source context, so the reader can ask about the material without moving to a separate conversation detached from it.",
     ],
   },
   {
@@ -135,13 +152,23 @@ export const projects: Project[] = [
     featured: true,
     year: "2026",
     narrative:
-      "Built for a real lending business that needed to move off spreadsheets without sacrificing the trust their existing process gave them. The core constraint was money math: daily reducing-balance interest, payment allocation (interest first, then principal), 30-day minimums, all calculated with BigNumber.js so a rounding error never costs the operator a customer. Everything sensitive goes through a review-then-confirm step before it posts.",
+      "A lending business needed to move its operations off spreadsheets while keeping loan calculations, investor capital, approvals, and financial statements connected. The central engineering constraint was accounting accuracy: daily reducing-balance interest, interest-first payment allocation, and 30-day minimums had to follow explicit rules before a transaction reached the books.",
+    caseStudy: {
+      role: "Full-stack product engineer · lending operations",
+      status: "Deployed for a customer business",
+      contribution: "I built and deployed the lending operations platform, translating the business’s loan and accounting rules into a ledger-based model, exact decimal calculations, staff workflows, permissions, and financial reporting. The work spans the data model and posting rules through to the interface staff use to review and confirm transactions.",
+      delivered: [
+        "Loan operations with daily reducing-balance interest and payment allocation, plus investor capital tracking and risk watchlists.",
+        "Super Admin, Admin, Loan Officer, and Viewer permissions, with review-then-confirm steps for rate changes, fund transfers, and large payments.",
+        "Audit trails and financial exports, including profit and loss and Balance Sheet reporting, within the same operational platform.",
+      ],
+      evidence: "The public Kaks Credit showcase uses a dashboard illustration. The operational workspace requires sign-in. Use the showcase to review the product presentation; it does not provide access to customer loan records.",
+    },
     keyDecisions: [
-      "BigNumber.js for all money math: no floating-point arithmetic touches a balance",
-      "TanStack DB collections with ElectricSQL for reactive, real-time UI state across roles",
-      "Role-based access (Super Admin, Admin, Loan Officer, Viewer) implemented through Better Auth plus a permission middleware",
-      "Review-then-confirm approvals before sensitive postings (rate changes, fund transfers, large payments) so a misclick never silently changes the books",
-      "Custom 'Quantitative Minimalist' design system with tabular Geist Mono for numbers, so columns of figures scan cleanly",
+      "Ledger-based accounting: loan activity, investor capital, and reporting connect to the same accounting model, so operational workflows and financial statements are designed together.",
+      "Exact decimal calculations: BigNumber.js represents money and applies the reducing-balance and allocation rules without binary floating-point arithmetic in balance calculations.",
+      "Permissions and deliberate posting: Better Auth and permission middleware separate the four staff roles. Sensitive changes pass through review and confirmation before posting, giving staff a chance to inspect their effect.",
+      "Reactive operational views: TanStack DB collections and ElectricSQL keep interface state current across roles, while tabular figures make amounts easier to compare and inspect.",
     ],
   },
   {

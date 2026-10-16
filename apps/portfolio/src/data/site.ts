@@ -7,6 +7,9 @@ export const site = {
   location: "Kampala, Uganda",
   timezone: "GMT+3",
   availability: "Available for senior remote product and full-stack roles",
+  email: "matovu90@gmail.com",
+  linkedin: "https://www.linkedin.com/in/matovu-farid/",
+  resumePath: "/Farid-Matovu-Resume.pdf",
   sameAs: ["https://github.com/matovu-farid", "https://www.linkedin.com/in/matovu-farid/"],
   studio: { name: "Fidexa", url: "https://www.fidexa.org", role: "Founder and Product Engineer" },
   pages: {

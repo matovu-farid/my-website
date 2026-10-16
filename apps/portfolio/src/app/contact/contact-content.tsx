@@ -6,28 +6,23 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PageTransition from "@/components/page-transition";
 import { sendEmail } from "@/actions/send-email";
+import { site } from "@/data/site";
+
+const deliveryError = "Your message couldn’t be sent. Please try again, or use the email link on this page.";
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<{ success?: boolean; message?: string } | null>(null);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const successDialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     if (!isSuccessOpen) return;
 
-    const previousFocus = document.activeElement as HTMLElement | null;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsSuccessOpen(false);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    closeButtonRef.current?.focus();
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      previousFocus?.focus();
-    };
+    const dialog = successDialogRef.current;
+    // Native modal focus containment, Escape dismissal, and focus restoration.
+    dialog?.showModal();
+    return () => dialog?.close();
   }, [isSuccessOpen]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,8 +40,10 @@ export default function Contact() {
         form.reset();
         setIsSuccessOpen(true);
       } else {
-        setFormStatus(result);
+        setFormStatus({ success: false, message: deliveryError });
       }
+    } catch {
+      setFormStatus({ success: false, message: deliveryError });
     } finally {
       setIsSubmitting(false);
     }
@@ -56,11 +53,50 @@ export default function Contact() {
     <div className="min-h-screen">
       <Header />
       <main>
-        <section className="page-hero"><div className="site-shell"><h1>Let&apos;s make<br />the useful part.</h1><p>Tell me what you are trying to make, what is hard, and what good looks like. I&apos;ll bring the questions, structure, and a clear next step.</p></div></section>
-        <section className="site-shell page-content"><PageTransition><div className="detail-layout"><div><p className="eyebrow">A good first message</p><h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-.035em", lineHeight: 1.08, marginTop: ".8rem" }}>The brief can be rough.</h2><p style={{ color: "var(--slate)", maxWidth: "26rem", lineHeight: 1.6, marginTop: "1.5rem" }}>A product idea, a system that is slowing the team down, or a question about the right technical path is enough to start.</p></div><form className="contact-form" onSubmit={handleSubmit}><div className="form-grid"><div className="form-field"><label htmlFor="name">Name</label><input type="text" id="name" name="name" required /></div><div className="form-field"><label htmlFor="email">Email</label><input type="email" id="email" name="email" required /></div><div className="form-field form-field-wide"><label htmlFor="message">What are you building?</label><textarea id="message" name="message" required /></div></div><button type="submit" className="button-primary form-submit" disabled={isSubmitting} aria-busy={isSubmitting}><Send size={14} /> {isSubmitting ? "Sending…" : "Send message"}</button>{formStatus && <p className="form-status" role="status">{formStatus.message}</p>}</form></div></PageTransition></section>
+        <section className="page-hero">
+          <div className="site-shell">
+            <h1>Let&apos;s talk about<br />your next hire.</h1>
+            <p>I&apos;m open to senior remote product and full-stack engineering roles. If your team needs someone who can take a product from domain modelling to delivery, I&apos;d like to hear from you.</p>
+          </div>
+        </section>
+        <section className="site-shell page-content">
+          <PageTransition>
+            <div className="detail-layout contact-layout">
+              <div className="contact-intro">
+                <h2>Start a conversation.</h2>
+                <p>Based in {site.location} ({site.timezone}). {site.availability}.</p>
+                <p>Hiring? Share the role, what the team is building, and any location or time-zone requirements. Product and consulting inquiries are welcome too.</p>
+                <ul className="contact-links" aria-label="Direct contact and profile">
+                  <li><a href={`mailto:${site.email}`}>Email {site.email}</a></li>
+                  <li><a href={site.linkedin}>Connect on LinkedIn</a></li>
+                  <li><a href={site.resumePath} download>Download résumé (PDF)</a></li>
+                </ul>
+              </div>
+              <form className="contact-form" onSubmit={handleSubmit} aria-labelledby="contact-form-title">
+                <h2 id="contact-form-title">Send a message</h2>
+                <p className="form-help" id="contact-form-help">All fields are required. A short introduction is enough.</p>
+                <div className="form-grid">
+                  <div className="form-field"><label htmlFor="name">Name</label><input type="text" id="name" name="name" autoComplete="name" disabled={isSubmitting} required /></div>
+                  <div className="form-field"><label htmlFor="email">Email</label><input type="email" id="email" name="email" autoComplete="email" disabled={isSubmitting} required /></div>
+                  <div className="form-field form-field-wide"><label htmlFor="message">Role or project details</label><textarea id="message" name="message" aria-describedby="contact-form-help" disabled={isSubmitting} required /></div>
+                </div>
+                <button type="submit" className="button-primary form-submit" disabled={isSubmitting} aria-busy={isSubmitting}><Send size={14} aria-hidden="true" /> {isSubmitting ? "Sending…" : "Send message"}</button>
+                {formStatus && <p className="form-status" role="alert">{formStatus.message}</p>}
+              </form>
+            </div>
+          </PageTransition>
+        </section>
       </main>
       <Footer />
-      {isSuccessOpen && <div className="contact-success-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setIsSuccessOpen(false); }}><div className="contact-success-modal" role="dialog" aria-modal="true" aria-labelledby="contact-success-title" aria-describedby="contact-success-description"><div className="contact-success-icon" aria-hidden="true">✓</div><p className="eyebrow contact-success-eyebrow">Message received</p><h2 id="contact-success-title">Thanks for reaching out.</h2><p id="contact-success-description">Thanks for your business. I&apos;ve received your note and will reach out soon.</p><button ref={closeButtonRef} type="button" className="button-primary contact-success-close" onClick={() => setIsSuccessOpen(false)}>Close</button></div></div>}
+      {isSuccessOpen && (
+        <dialog ref={successDialogRef} className="contact-success-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-success-title" aria-describedby="contact-success-description" onCancel={() => setIsSuccessOpen(false)}>
+          <div className="contact-success-modal">
+            <h2 id="contact-success-title">Thanks for reaching out.</h2>
+            <p id="contact-success-description">Your message has been sent. I&apos;ll reply to the email address you provided.</p>
+            <button type="button" className="button-primary contact-success-close" onClick={() => setIsSuccessOpen(false)}>Close</button>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 }

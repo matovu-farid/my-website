@@ -6,6 +6,35 @@ const origin = "https://matovu-farid.com";
 const caseIds = ["rishi", "money-lending", "inventory-trade", "maria", "scrap-platform", "case-medinsurance", "apartment-manager"];
 const cache = new Map();
 
+test("hiring contacts are available without submitting the form", async () => {
+  const { body } = await read("/contact");
+  assert.match(body, /senior remote/i);
+  assert.match(body, /href="mailto:matovu90@gmail\.com"/);
+  assert.match(body, /href="https:\/\/www\.linkedin\.com\/in\/matovu-farid\/"/);
+  assert.match(body, /<a[^>]*href="\/Farid-Matovu-Resume\.pdf"[^>]*download/);
+  assert.doesNotMatch(body, /Thanks for your business|What are you building\?/);
+});
+
+for (const id of ["rishi", "money-lending"]) {
+  test(`flagship contribution and evidence remain readable in HTML and agent guide: ${id}`, async () => {
+    const { body } = await read(`/projects/${id}`);
+    const guide = (await read("/llms-full.txt")).body;
+    for (const heading of ["My contribution", "Delivered", "Evidence and scope"]) {
+      assert.ok(body.includes(`>${heading}</h2>`), `missing section: ${heading}`);
+    }
+    assert.match(body, /href="\/contact"[^>]*>Discuss a similar role/);
+    assert.ok(guide.includes("My contribution:"));
+    if (id === "rishi") {
+      assert.match(body, /Android is planned, not released/);
+      assert.match(body, /codebase integrations, not public releases/);
+      assert.match(body, /href="https:\/\/youtu\.be\/vcWcpEGsof8"/);
+    } else {
+      assert.match(body, /dashboard illustration/);
+      assert.match(body, /requires sign-in/);
+    }
+  });
+}
+
 test("production redirects resolve directly to the apex canonical host", {
   skip: new URL(base).hostname !== new URL(origin).hostname,
 }, async () => {

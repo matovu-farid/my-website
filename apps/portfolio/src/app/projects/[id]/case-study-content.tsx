@@ -6,6 +6,19 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import type { Project } from "@/data/projects";
 import { CATEGORY_LABELS, allProjectsSorted } from "@/data/projects";
+import { site } from "@/data/site";
+
+function EvidenceLinks({ project }: { project: Project }) {
+  return (
+    <div className="case-study-links" aria-label="Project evidence">
+      {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"><Code size={13} aria-hidden="true" /> Repository</a>}
+      {project.appStoreUrl && <a href={project.appStoreUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /> App Store</a>}
+      {project.productUrl && <a href={project.productUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /> Product site</a>}
+      {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /> {project.liveLabel ?? "Live"}</a>}
+      {project.videoUrl && <a href={project.videoUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} aria-hidden="true" /> Watch walkthrough</a>}
+    </div>
+  );
+}
 
 interface CaseStudyContentProps {
   project: Project;
@@ -23,6 +36,13 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
             <h1>{project.title}</h1>
             <p className="case-study-description">{project.description}</p>
 
+            {project.caseStudy && (
+              <dl className="case-study-summary">
+                <div><dt>My role</dt><dd>{project.caseStudy.role}</dd></div>
+                <div><dt>Delivery</dt><dd>{project.caseStudy.status}</dd></div>
+              </dl>
+            )}
+
             <p className="case-study-label">Product evidence</p>
             {project.imageUrl ? (
               <div className="case-study-media">
@@ -33,6 +53,7 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
             )}
 
             {project.story && <p className="media-provenance">{project.story.caption}</p>}
+            {project.caseStudy && <EvidenceLinks project={project} />}
 
             {project.screenshots && project.screenshots.length > 1 && (
               <>
@@ -43,8 +64,15 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
               </>
             )}
 
-            <p className="case-study-label">Why it exists</p>
+            <h2 className="case-study-label">Why it exists</h2>
             <p className="case-study-copy">{project.narrative}</p>
+
+            {project.caseStudy && (
+              <section>
+                <h2 className="case-study-label">My contribution</h2>
+                <p className="case-study-copy">{project.caseStudy.contribution}</p>
+              </section>
+            )}
 
             {project.rebuiltFrom && (
               <>
@@ -55,17 +83,31 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
 
             {project.keyDecisions && (
               <>
-                <p className="case-study-label">Key decisions</p>
+                <h2 className="case-study-label">Key decisions</h2>
                 <ul className="case-study-decision-list">{project.keyDecisions.map((decision) => <li key={decision}>{decision}</li>)}</ul>
               </>
             )}
 
-            <div className="case-study-links">
-              {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"><Code size={13} style={{ display: "inline" }} /> Source</a>}
-              {project.appStoreUrl && <a href={project.appStoreUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} style={{ display: "inline" }} /> App Store</a>}
-              {project.productUrl && <a href={project.productUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} style={{ display: "inline" }} /> Product site</a>}
-              {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} style={{ display: "inline" }} /> {project.liveLabel ?? "Live"}</a>}
-            </div>
+            {project.caseStudy ? (
+              <>
+                <section>
+                  <h2 className="case-study-label">Delivered</h2>
+                  <ul className="case-study-decision-list">{project.caseStudy.delivered.map((item) => <li key={item}>{item}</li>)}</ul>
+                </section>
+                <section>
+                  <h2 className="case-study-label">Evidence and scope</h2>
+                  <p className="case-study-copy">{project.caseStudy.evidence}</p>
+                </section>
+                <section className="case-study-contact" aria-labelledby="case-study-contact-title">
+                  <h2 id="case-study-contact-title">Need this kind of ownership on your team?</h2>
+                  <p>I&apos;m open to senior remote product and full-stack engineering roles.</p>
+                  <div className="case-study-contact-actions">
+                    <Link href="/contact" className="button-primary">Discuss a similar role</Link>
+                    <a href={site.resumePath} download>Download résumé (PDF)</a>
+                  </div>
+                </section>
+              </>
+            ) : <EvidenceLinks project={project} />}
 
             <div className="case-study-nav">
               {prevProject ? <Link href={"/projects/" + prevProject.id}><ArrowLeft size={12} style={{ display: "inline" }} /> {prevProject.title}</Link> : <span />}
