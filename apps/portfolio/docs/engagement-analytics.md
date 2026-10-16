@@ -27,21 +27,32 @@ duplicate React effect executions; returning after another route counts again.
 ## Reporting
 
 Open the saved [Portfolio engagement dashboard](https://us.posthog.com/project/623765/dashboard/2219363).
-Its five charts use **Total count**, the last 30 days, and an event-property filter
-**`site` equals `portfolio`**:
+Its five Trends charts use **Total count**. A sixth chart shows the conversion
+funnel. All charts cover the last 30 days and filter **`site` equals `portfolio`**:
 
 - Daily engagement across all four events.
 - Case-study views by `project_id`.
 - Résumé download clicks by `placement`.
 - Contact clicks by `channel`.
 - Successful contact form submissions, also included in the daily overview.
+- [Case study to contact funnel](https://us.posthog.com/project/623765/insights/jvNs2L29):
+  case-study view → contact-page click → successful form submission, in order,
+  within one hour. Other events may occur between the required steps.
 
 The submission series excludes `environment=verification`. The isolated form
 fixture sends its QA event with that value, so testing cannot inflate genuine
 submission totals. Existing release checks for the original click/view events
 remain included as documented below.
 
-All charts use native Trends queries. Dates follow the project's UTC timezone.
+The funnel's middle step requires `channel=contact_page`; email and LinkedIn
+clicks stay in the separate contact-channel chart. Its final step excludes
+`environment=verification`. Funnel counts represent anonymous document visits,
+not identified people: the same ID persists through Next.js client navigation,
+but full reloads, new tabs, and returning visits start a new ID and cannot be
+connected. No persistent storage or identity collection was added for the funnel.
+
+The original charts use native Trends queries; the funnel uses a native
+FunnelsQuery with all three steps required. Dates follow the project's UTC timezone.
 Use the same site filter when adding portfolio reports to this shared project.
 
 The setup verification event `portfolio_analytics_smoke_test` has
@@ -54,8 +65,8 @@ checks after deployment produce a small number of real engagement events.
   the confirmed outcome only. No automatic general page views, field tracking,
   session replay, identification, or error recording.
 - No cookies or local/session storage. A random ID lives only in the current
-  document's memory; it changes on a full reload. Use total events for reporting,
-  not unique visitors or long-term user journeys.
+  document's memory; it changes on a full reload. Event totals and the funnel's
+  anonymous visits do not measure unique people or long-term user journeys.
 - Person-profile processing and GeoIP enrichment are disabled on every event.
   The payload supplies `0.0.0.0` as the IP property. As with any HTTP service,
   PostHog receives the network connection; this is not a claim about provider logs.
@@ -110,3 +121,10 @@ PostHog accepted the browser's QA event with HTTP 200. Its schema includes
 `page`, `channel`, `environment`, and `site`; all five saved dashboard queries
 run without warnings. The genuine submission total is zero at setup because the
 QA event is excluded. No real test email was sent.
+
+The funnel was verified against recorded events and again from its saved dashboard
+tile. At setup it returned 7 anonymous visits at the case-study step, 1 reaching
+the contact page, and 0 successful form submissions, with no query warnings.
+These early counts include release checks and are not an organic conversion
+baseline. The existing tracking already links the in-site steps; this addition
+changes reporting only.
