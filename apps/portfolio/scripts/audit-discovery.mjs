@@ -5,6 +5,23 @@ const base = process.env.PORTFOLIO_AUDIT_URL ?? "http://localhost:3917";
 const origin = "https://matovu-farid.com";
 const caseIds = ["rishi", "money-lending", "inventory-trade", "maria", "scrap-platform", "case-medinsurance", "apartment-manager"];
 const cache = new Map();
+
+test("production redirects resolve directly to the apex canonical host", {
+  skip: new URL(base).hostname !== new URL(origin).hostname,
+}, async () => {
+  const paths = ["/", "/projects", "/experience", "/contact", ...caseIds.map((id) => `/projects/${id}`), "/projects?category=web-apps&page=2", "/llms.txt", "/sitemap.xml"];
+  for (const path of paths) {
+    const apex = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(45000) });
+    assert.equal(apex.status, 200, `canonical destination must serve directly: ${path}`);
+    await apex.arrayBuffer();
+    const alternate = new URL(path, origin);
+    alternate.hostname = `www.${alternate.hostname}`;
+    const redirect = await fetch(alternate, { redirect: "manual", signal: AbortSignal.timeout(45000) });
+    assert.equal(redirect.status, 308, `www must permanently redirect: ${path}`);
+    assert.equal(redirect.headers.get("location"), new URL(path, origin).href, "redirect must preserve path and query");
+    await redirect.arrayBuffer();
+  }
+});
 const decode = (text) => text.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replaceAll("&#x27;", "'");
 function attr(tag, name) {
   return decode(tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? "");
