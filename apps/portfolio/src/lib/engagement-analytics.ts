@@ -9,11 +9,60 @@ type Dependencies = {
   send: (url: string, options: RequestInit) => unknown;
   uuid: () => string;
   optedOut: () => boolean;
+  storage?: () => Pick<Storage, "getItem" | "setItem" | "removeItem">;
+  now?: () => number;
 };
 
 const origin = "https://matovu-farid.com";
 const placements = new Set(["header", "footer", "home_hero", "home_contact", "case_study", "contact", "main"]);
 const ingestionHosts = new Set(["https://us.i.posthog.com", "https://eu.i.posthog.com"]);
+const identityKey = "portfolio:anonymous-visitor:v1";
+const identityLifetime = 30 * 24 * 60 * 60 * 1000;
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+type AnonymousIdentity = { id: string; expiresAt: number };
+
+/** First-party random identity only; storage failures retain a temporary document ID. */
+function createAnonymousIdentity(dependencies: Dependencies) {
+  let memory: AnonymousIdentity | undefined;
+  let storageUnavailable = false;
+
+  function valid(value: unknown, now: number): value is AnonymousIdentity {
+    if (!value || typeof value !== "object") return false;
+    const record = value as AnonymousIdentity;
+    return typeof record.id === "string" && uuidPattern.test(record.id) &&
+      Number.isFinite(record.expiresAt) && record.expiresAt > now && record.expiresAt <= now + identityLifetime;
+  }
+
+  return {
+    get() {
+      const now = dependencies.now?.() ?? Date.now();
+      if (dependencies.storage && !storageUnavailable) {
+        try {
+          const storage = dependencies.storage();
+          const raw = storage.getItem(identityKey);
+          let stored: unknown;
+          try { stored = raw ? JSON.parse(raw) : undefined; } catch { /* Replace corrupt records. */ }
+          if (valid(stored, now)) {
+            memory = { id: stored.id, expiresAt: stored.expiresAt };
+            return memory.id;
+          }
+          memory = { id: dependencies.uuid(), expiresAt: now + identityLifetime };
+          storage.setItem(identityKey, JSON.stringify(memory));
+          return memory.id;
+        } catch { storageUnavailable = true; }
+      }
+      if (!memory || memory.expiresAt <= now) {
+        memory = { id: dependencies.uuid(), expiresAt: now + identityLifetime };
+      }
+      return memory.id;
+    },
+    clear() {
+      memory = undefined;
+      storageUnavailable = false;
+      try { dependencies.storage?.().removeItem(identityKey); } catch { /* Storage may be denied. */ }
+    },
+  };
+}
 
 export const CONTACT_FORM_SUCCESS_EVENT = "portfolio:contact-form-success";
 
@@ -26,12 +75,24 @@ export function notifyContactFormResult(
   try { notify(); } catch { /* Analytics must not interrupt a successful submission. */ }
 }
 
-/** Explicit events; no SDK, cookies, browser storage, or automatic collection. */
+/** Explicit events; no SDK, cookies, person profiles, or automatic collection. */
 export function createEngagementTracker(config: EngagementConfig, dependencies: Dependencies) {
   const caseStudies = new Map(config.caseStudyIds.map((id) => [`/projects/${id}`, id]));
   const pages = new Set(["/", "/projects", "/experience", "/contact", ...caseStudies.keys()]);
   let lastPage: string | undefined;
-  let visitId: string | undefined;
+  const identity = createAnonymousIdentity(dependencies);
+
+  function canTrack() {
+    if (!config.enabled || !config.token || !ingestionHosts.has(config.host)) return false;
+    if (dependencies.optedOut()) {
+      identity.clear();
+      return false;
+    }
+    return true;
+  }
+
+  // Honor opt-outs even when the landing page has no tracked event.
+  try { canTrack(); } catch { /* Missing browser APIs must be harmless. */ }
 
   function publicPage(pathname: string) {
     const path = pathname.split(/[?#]/, 1)[0].replace(/\/$/, "") || "/";
@@ -40,9 +101,8 @@ export function createEngagementTracker(config: EngagementConfig, dependencies: 
 
   function capture(event: string, properties: Record<string, string>) {
     try {
-      if (!config.enabled || !config.token || !ingestionHosts.has(config.host) || dependencies.optedOut()) return;
-      // Random per-document ID stays in memory and is never linked to a person.
-      visitId ??= dependencies.uuid();
+      if (!canTrack()) return;
+      const visitorId = identity.get();
       const request = dependencies.send(`${config.host}/i/v0/e/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,7 +112,7 @@ export function createEngagementTracker(config: EngagementConfig, dependencies: 
         body: JSON.stringify({
           api_key: config.token,
           event,
-          distinct_id: visitId,
+          distinct_id: visitorId,
           properties: {
             ...properties,
             site: "portfolio",

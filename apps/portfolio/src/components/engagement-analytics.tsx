@@ -13,6 +13,7 @@ export default function EngagementAnalytics({ config }: { config: EngagementConf
     tracker.current ??= createEngagementTracker(config, {
       send: (url, options) => fetch(url, options),
       uuid: () => crypto.randomUUID(),
+      storage: () => window.localStorage,
       optedOut: () => navigator.doNotTrack === "1" ||
         (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true,
     });

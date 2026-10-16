@@ -139,3 +139,145 @@ test("failed or blocked analytics never throws into navigation", async () => {
     await new Promise((resolve) => setImmediate(resolve));
   }
 });
+
+function sharedBrowser() {
+  const values = new Map();
+  let now = Date.parse("2026-10-17T09:00:00Z");
+  let sequence = 0;
+  const storage = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+    removeItem: (key) => values.delete(key),
+  };
+  const dependencies = {
+    storage: () => storage,
+    now: () => now,
+    uuid: () => `00000000-0000-4000-8000-${String(++sequence).padStart(12, "0")}`,
+  };
+  return { values, storage, dependencies, advance: (ms) => { now += ms; } };
+}
+
+test("one anonymous browser connects the funnel across reloads and new tabs", () => {
+  const browser = sharedBrowser();
+  const study = fixture({}, browser.dependencies);
+  study.tracker.view("/projects/rishi");
+  const reload = fixture({}, browser.dependencies);
+  reload.tracker.click("/contact", "/projects/rishi", "case_study");
+  const newTab = fixture({}, browser.dependencies);
+  newTab.tracker.contactSubmitted();
+  const events = [...study.sent, ...reload.sent, ...newTab.sent];
+  assert.equal(new Set(events.map(({ payload }) => payload.distinct_id)).size, 1);
+  assert.equal(browser.values.size, 1);
+  const record = JSON.parse([...browser.values.values()][0]);
+  assert.deepEqual(Object.keys(record).sort(), ["expiresAt", "id"]);
+  assert.equal(record.id, events[0].payload.distinct_id);
+  assert.equal(record.expiresAt, Date.parse("2026-11-16T09:00:00Z"));
+  // Separate browsers use their own random generator; inject a distinct UUID here.
+  const independent = fixture({}, { ...sharedBrowser().dependencies, uuid: () => "11111111-1111-4111-8111-111111111111" });
+  independent.tracker.contactSubmitted();
+  assert.notEqual(independent.sent[0].payload.distinct_id, events[0].payload.distinct_id);
+});
+
+test("the browser ID expires after 30 days without extending on activity, even in an open tab", () => {
+  const browser = sharedBrowser();
+  const { tracker, sent } = fixture({}, browser.dependencies);
+  tracker.view("/projects/rishi");
+  const original = [...browser.values.values()][0];
+  browser.advance(29 * 24 * 60 * 60 * 1000);
+  tracker.click("/contact", "/projects/rishi", "main");
+  assert.equal([...browser.values.values()][0], original);
+  browser.advance(24 * 60 * 60 * 1000);
+  tracker.contactSubmitted();
+  assert.equal(sent[0].payload.distinct_id, sent[1].payload.distinct_id);
+  assert.notEqual(sent[0].payload.distinct_id, sent[2].payload.distinct_id);
+  const reload = fixture({}, browser.dependencies);
+  reload.tracker.contactSubmitted();
+  assert.equal(reload.sent[0].payload.distinct_id, sent[2].payload.distinct_id);
+});
+
+test("clearing storage resets the ID, including in an already open tab", () => {
+  const browser = sharedBrowser();
+  const { tracker, sent } = fixture({}, browser.dependencies);
+  tracker.view("/projects/rishi");
+  browser.values.clear();
+  tracker.contactSubmitted();
+  assert.notEqual(sent[0].payload.distinct_id, sent[1].payload.distinct_id);
+});
+
+test("malformed, expired and non-random stored identities never enter payloads", () => {
+  const invalidRecords = [
+    "broken-json", "null",
+    JSON.stringify({ id: "private@example.com", expiresAt: 1794823200000 }),
+    JSON.stringify({ id: "00000000-0000-4000-8000-000000000001", expiresAt: 0 }),
+    JSON.stringify({ id: "00000000-0000-4000-8000-000000000001", expiresAt: 9999999999999 }),
+    JSON.stringify({ id: "00000000-0000-4000-8000-000000000001", expiresAt: "1794823200000" }),
+  ];
+  for (const raw of invalidRecords) {
+    const browser = sharedBrowser();
+    const initial = fixture({}, browser.dependencies);
+    initial.tracker.contactSubmitted();
+    const key = [...browser.values.keys()][0];
+    browser.values.set(key, raw);
+    const next = fixture({}, browser.dependencies);
+    next.tracker.contactSubmitted();
+    assert.equal(next.sent.length, 1);
+    assert.match(next.sent[0].payload.distinct_id, /^[0-9a-f-]{36}$/);
+    assert.notEqual(next.sent[0].payload.distinct_id, initial.sent[0].payload.distinct_id);
+    assert.ok(!JSON.stringify(next.sent).includes("private@example.com"));
+    assert.equal(browser.values.size, 1);
+  }
+});
+
+test("opt-out removes the browser ID and never reads or writes identity storage", () => {
+  const browser = sharedBrowser();
+  let optedOut = false;
+  const { tracker, sent } = fixture({}, { ...browser.dependencies, optedOut: () => optedOut });
+  tracker.view("/projects/rishi");
+  optedOut = true;
+  tracker.contactSubmitted();
+  assert.equal(browser.values.size, 0);
+  assert.equal(sent.length, 1);
+  let identityAccesses = 0;
+  let removals = 0;
+  const optedOutReload = fixture({}, {
+    ...browser.dependencies, optedOut: () => true,
+    storage: () => ({
+      getItem: () => { identityAccesses++; return null; },
+      setItem: () => { identityAccesses++; },
+      removeItem: () => { removals++; },
+    }),
+  });
+  optedOutReload.tracker.contactSubmitted();
+  assert.equal(optedOutReload.sent.length, 0);
+  assert.equal(identityAccesses, 0);
+  assert.ok(removals > 0);
+  optedOut = false;
+  tracker.contactSubmitted();
+  assert.notEqual(sent[0].payload.distinct_id, sent[1].payload.distinct_id);
+});
+
+test("disabled configuration never touches storage", () => {
+  for (const overrides of [{ enabled: false }, { token: "" }, { host: "https://example.com" }]) {
+    let touched = false;
+    const { tracker, sent } = fixture(overrides, { storage: () => { touched = true; throw new Error("unavailable"); } });
+    tracker.contactSubmitted();
+    assert.equal(touched, false);
+    assert.equal(sent.length, 0);
+  }
+});
+
+test("unavailable or read-only storage falls back to a stable temporary ID", () => {
+  for (const storage of [
+    () => { throw new Error("storage denied"); },
+    () => ({ getItem: () => null, setItem: () => { throw new Error("quota"); }, removeItem: () => { throw new Error("denied"); } }),
+  ]) {
+    const browser = sharedBrowser();
+    const { tracker, sent } = fixture({}, { ...browser.dependencies, storage });
+    tracker.view("/projects/rishi");
+    tracker.click("/contact", "/projects/rishi", "main");
+    tracker.contactSubmitted();
+    assert.equal(sent.length, 3);
+    assert.equal(new Set(sent.map(({ payload }) => payload.distinct_id)).size, 1);
+    assert.equal(browser.values.size, 0);
+  }
+});

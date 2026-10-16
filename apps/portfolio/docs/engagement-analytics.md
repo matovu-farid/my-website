@@ -46,10 +46,13 @@ remain included as documented below.
 
 The funnel's middle step requires `channel=contact_page`; email and LinkedIn
 clicks stay in the separate contact-channel chart. Its final step excludes
-`environment=verification`. Funnel counts represent anonymous document visits,
-not identified people: the same ID persists through Next.js client navigation,
-but full reloads, new tabs, and returning visits start a new ID and cannot be
-connected. No persistent storage or identity collection was added for the funnel.
+`environment=verification`. Since 17 October 2026, funnel counts use random
+browser IDs that persist across
+client navigation, full reloads, new tabs, and returning visits on the same origin
+for up to 30 days. The conversion window remains one hour: persistence connects
+steps across documents but does not extend the time allowed between steps. These
+are pseudonymous browser counts, not unique people or cross-device identities.
+Events recorded before this change keep their old document IDs and are not merged.
 
 The original charts use native Trends queries; the funnel uses a native
 FunnelsQuery with all three steps required. Dates follow the project's UTC timezone.
@@ -64,15 +67,25 @@ checks after deployment produce a small number of real engagement events.
 - Only the four explicit engagement events are collected. Form analytics records
   the confirmed outcome only. No automatic general page views, field tracking,
   session replay, identification, or error recording.
-- No cookies or local/session storage. A random ID lives only in the current
-  document's memory; it changes on a full reload. Event totals and the funnel's
-  anonymous visits do not measure unique people or long-term user journeys.
+- No cookies, session storage, fingerprinting, or account identification. One
+  first-party localStorage entry, `portfolio:anonymous-visitor:v1`, contains only
+  a cryptographically random UUID and its expiry timestamp. It expires 30 days
+  after creation; activity never extends it. Expired records are replaced on the
+  next tracked event, including in an already open tab. No background cleanup runs
+  while the site is closed. Clearing site storage resets the ID. Other browsers,
+  devices, origins, and isolated private sessions are not connected.
+- Storage is checked at each event so other tabs adopt a replacement ID. Malformed
+  IDs, non-UUID values, and invalid expiry timestamps are replaced. If storage is
+  denied or full, collection uses a temporary document ID; reload/tab continuity
+  is then unavailable. No attempt is made to bypass browser storage restrictions.
 - Person-profile processing and GeoIP enrichment are disabled on every event.
   The payload supplies `0.0.0.0` as the IP property. As with any HTTP service,
   PostHog receives the network connection; this is not a claim about provider logs.
 - Query strings, fragments, referrers, link destinations, email addresses, and
   form contents are excluded. Pages, channels, and placements use allowlists.
-- Do Not Track and Global Privacy Control suppress collection. Ad blockers and
+- Do Not Track and Global Privacy Control suppress collection and clear the stored
+  ID when the tracker initializes or checks an event (removal is best effort when
+  storage is denied). They never read or create an ID while active. Ad blockers and
   network failures may also prevent delivery. These are best-effort browser counts.
 - Only Vercel's production environment at `https://matovu-farid.com` sends events.
   Development, preview deployments, and unknown hosts send nothing.
@@ -126,5 +139,17 @@ The funnel was verified against recorded events and again from its saved dashboa
 tile. At setup it returned 7 anonymous visits at the case-study step, 1 reaching
 the contact page, and 0 successful form submissions, with no query warnings.
 These early counts include release checks and are not an organic conversion
-baseline. The existing tracking already links the in-site steps; this addition
-changes reporting only.
+baseline. The 16 October funnel addition changed reporting only; the 17 October
+identity extension adds the bounded browser storage described above.
+
+
+The 17 October identity extension passed 16 event-contract tests covering reloads,
+new tabs, fixed expiry, clearing storage, corrupt records, opt-outs, disabled
+configuration, and denied/full storage. TypeScript, lint, the design contract,
+and an isolated production build passed. Its HTTP suite passed 32 checks with
+one production-only redirect check skipped locally. A separate instrumented
+production fixture verified matching IDs across a full reload, a contact click,
+and a success signal in a second tab; clearing its storage reset the ID and an
+existing tab adopted the replacement. The fixture intercepted delivery locally:
+no test events reached PostHog and no email was sent. The saved funnel needs no
+query change because it already groups the three events by their distinct ID.
