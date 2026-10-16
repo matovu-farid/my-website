@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createEngagementTracker } from "../src/lib/engagement-analytics.ts";
+import { createEngagementTracker, notifyContactFormResult } from "../src/lib/engagement-analytics.ts";
 
 const config = {
   enabled: true,
@@ -19,6 +19,35 @@ function fixture(overrides = {}, dependencies = {}) {
   });
   return { tracker, sent };
 }
+
+test("only a confirmed form success signals a submission, with no form or provider data", () => {
+  const { tracker, sent } = fixture();
+  const notify = () => tracker.contactSubmitted();
+  notifyContactFormResult({ success: false, message: "Provider rejected the message" }, notify);
+  assert.equal(sent.length, 0);
+  notifyContactFormResult({ success: true, name: "Private name", email: "private@example.com", message: "Private message", id: "provider-id" }, notify);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].payload.event, "contact_form_submitted");
+  assert.deepEqual(sent[0].payload.properties, {
+    page: "/contact", channel: "form", environment: "production", site: "portfolio",
+    $process_person_profile: false, $geoip_disable: true, $ip: "0.0.0.0",
+  });
+  assert.ok(!JSON.stringify(sent).includes("Private"));
+  assert.ok(!JSON.stringify(sent).includes("private@example.com"));
+  assert.ok(!JSON.stringify(sent).includes("provider-id"));
+});
+
+test("submission tracking preserves privacy controls and never breaks the success flow", () => {
+  for (const overrides of [{ enabled: false }, { token: "" }]) {
+    const { tracker, sent } = fixture(overrides);
+    tracker.contactSubmitted();
+    assert.equal(sent.length, 0);
+  }
+  const { tracker, sent } = fixture({}, { optedOut: () => true });
+  tracker.contactSubmitted();
+  assert.equal(sent.length, 0);
+  assert.doesNotThrow(() => notifyContactFormResult({ success: true }, () => { throw new Error("analytics unavailable"); }));
+});
 
 test("case study views count rendered visits, including returning after another route", () => {
   const { tracker, sent } = fixture();

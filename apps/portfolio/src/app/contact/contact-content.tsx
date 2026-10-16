@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 import PageTransition from "@/components/page-transition";
 import { sendEmail } from "@/actions/send-email";
 import { site } from "@/data/site";
+import { notifyContactFormResult } from "@/lib/engagement-analytics";
 
 const deliveryError = "Your message couldn’t be sent. Please try again, or use the email link on this page.";
 
@@ -49,6 +50,7 @@ export default function Contact() {
 
     try {
       const result = await sendEmail(formData);
+      notifyContactFormResult(result);
 
       if (result.success) {
         form.reset();

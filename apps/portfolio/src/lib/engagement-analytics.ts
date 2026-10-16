@@ -15,7 +15,18 @@ const origin = "https://matovu-farid.com";
 const placements = new Set(["header", "footer", "home_hero", "home_contact", "case_study", "contact", "main"]);
 const ingestionHosts = new Set(["https://us.i.posthog.com", "https://eu.i.posthog.com"]);
 
-/** Three explicit events; no SDK, cookies, browser storage, or automatic collection. */
+export const CONTACT_FORM_SUCCESS_EVENT = "portfolio:contact-form-success";
+
+/** Signal only the server-confirmed outcome; never pass form fields or delivery IDs. */
+export function notifyContactFormResult(
+  result: { success: boolean },
+  notify = () => { document.dispatchEvent(new Event(CONTACT_FORM_SUCCESS_EVENT)); },
+) {
+  if (!result.success) return;
+  try { notify(); } catch { /* Analytics must not interrupt a successful submission. */ }
+}
+
+/** Explicit events; no SDK, cookies, browser storage, or automatic collection. */
 export function createEngagementTracker(config: EngagementConfig, dependencies: Dependencies) {
   const caseStudies = new Map(config.caseStudyIds.map((id) => [`/projects/${id}`, id]));
   const pages = new Set(["/", "/projects", "/experience", "/contact", ...caseStudies.keys()]);
@@ -59,6 +70,9 @@ export function createEngagementTracker(config: EngagementConfig, dependencies: 
   }
 
   return {
+    contactSubmitted() {
+      capture("contact_form_submitted", { page: "/contact", channel: "form", environment: "production" });
+    },
     view(pathname: string) {
       const page = publicPage(pathname);
       if (lastPage === page) return;
