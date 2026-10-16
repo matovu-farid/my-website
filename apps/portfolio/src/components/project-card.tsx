@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ExternalLink, Code, ArrowRight } from "lucide-react";
 import type { Project } from "@/data/projects";
@@ -14,22 +12,25 @@ interface ProjectCardProps {
 export default function ProjectCard({
   project,
   featured = false,
-  index = 0,
 }: ProjectCardProps) {
+  const story = featured ? project.story : undefined;
+  const Heading = featured ? "h3" : "h2";
   const hasNarrative = Boolean(project.narrative);
 
   return (
-    <article className={`project-card ${featured ? "project-card--featured" : ""}`}>
+    <article id={`project-${project.id}`} className={`project-card ${featured ? "project-card--story" : ""}`}>
       {project.imageUrl ? (
-        <div className="project-card-media">
+        <figure className={`project-card-media ${project.id === "rishi" ? "project-card-media--phone" : ""}`}>
           <img
             src={project.imageUrl}
-            alt={`${project.title} product interface preview`}
+            alt={project.imageAlt ?? `${project.title} product interface preview`}
             width={1021}
             height={657}
-            loading={index > 2 ? "lazy" : "eager"}
+            loading="lazy"
+            decoding="async"
           />
-        </div>
+          {story && <figcaption>{story.caption}</figcaption>}
+        </figure>
       ) : (
         <div className="project-card-media">
           <span className="project-card-media-placeholder" aria-hidden="true">{project.title[0]}</span>
@@ -40,8 +41,15 @@ export default function ProjectCard({
           <span>{CATEGORY_LABELS[project.category]}</span>
           <span>{project.year ?? "Selected work"}</span>
         </div>
-        <h3>{project.title}</h3>
-        <p>{featured ? project.longDescription : project.description}</p>
+        <Heading>{story?.name ?? project.title}</Heading>
+        {story ? <>
+          <p className="project-story-intro">{story.intro}</p>
+          <dl className="project-story-details">
+            <div><dt>The situation</dt><dd>{story.situation}</dd></div>
+            <div><dt>My approach</dt><dd>{story.decision}</dd></div>
+            <div><dt>Delivered</dt><dd>{story.delivered}</dd></div>
+          </dl>
+        </> : <p>{project.description}</p>}
         <div className="project-card-links">
           {hasNarrative && (
             <Link
@@ -80,6 +88,9 @@ export default function ProjectCard({
               <ExternalLink size={16} />
               Product Site
             </a>
+          )}
+          {project.videoUrl && (
+            <a href={project.videoUrl} target="_blank" rel="noopener noreferrer">Walkthrough <ExternalLink size={14} aria-hidden="true" /></a>
           )}
           {project.liveUrl && (
             <a

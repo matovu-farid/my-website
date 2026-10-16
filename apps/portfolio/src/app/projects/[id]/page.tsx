@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { allProjectsSorted } from "@/data/projects";
 import CaseStudyContent from "./case-study-content";
+import StructuredData from "@/components/structured-data";
+import { projectMetadata, projectStructuredData } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -15,11 +17,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
   const project = allProjectsSorted.find((p) => p.id === id);
-  if (!project) return { title: "Not Found" };
-  return {
-    title: `${project.title} — Farid Matovu`,
-    description: project.description,
-  };
+  if (!project || !project.narrative) return { title: "Not Found", robots: { index: false, follow: false }, alternates: { canonical: null } };
+  return projectMetadata(project);
 }
 
 export default async function CaseStudyPage({ params }: PageProps) {
@@ -39,10 +38,13 @@ export default async function CaseStudyPage({ params }: PageProps) {
       : null;
 
   return (
+    <>
+    <StructuredData data={projectStructuredData(project)} />
     <CaseStudyContent
       project={project}
       prevProject={prevProject}
       nextProject={nextProject}
     />
+    </>
   );
 }

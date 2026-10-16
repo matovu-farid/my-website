@@ -13,10 +13,10 @@ const [css, home, projects, data, card, caseStudy, experience, layout, header, c
   read("src/data/projects.ts"),
   read("src/components/project-card.tsx"),
   read("src/app/projects/[id]/case-study-content.tsx"),
-  read("src/app/experience/page.tsx"),
+  read("src/data/experience.ts"),
   read("src/app/layout.tsx"),
   read("src/components/header.tsx"),
-  read("src/app/contact/page.tsx"),
+  read("src/app/contact/contact-content.tsx"),
   read("src/actions/send-email.ts"),
   exists("public/vercel.svg"),
   exists("src/app/favicon.ico"),
@@ -45,7 +45,7 @@ assert.match(experience, /Bachelor of Engineering \(BE\), Civil Engineering/i, "
 assert.match(experience, /https:\/\/www\.fidexa\.org\//i, "Fidexa experience link is missing");
 assert.match(experience, /https:\/\/dabblelab\.com\//i, "Dabble Lab experience link is missing");
 assert.match(experience, /https:\/\/www\.microverse\.org\//i, "Microverse experience link is missing");
-assert.match(layout, /export const metadata(?:\s*:\s*Metadata)?\s*=\s*\{[\s\S]*Farid Matovu/i, "portfolio metadata must be defined in the root layout");
+assert.match(layout, /export const metadata(?:\s*:\s*Metadata)?\s*=\s*\{[\s\S]*pageMetadata\(site.pages.home\)/i, "portfolio metadata must be defined in the root layout");
 assert.match(header, /src="\/fidexa-app-icon\.svg"/i, "portfolio header must use the Fidexa mark");
 assert.match(contact, /role="dialog"/i, "contact success must use an accessible dialog");
 assert.match(contact, /Thanks for reaching out\./i, "contact success copy is missing");

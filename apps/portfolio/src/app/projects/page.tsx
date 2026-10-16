@@ -1,70 +1,52 @@
-"use client";
-
-import { useState, useMemo } from "react";
+import Link from "next/link";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import PageTransition from "@/components/page-transition";
 import ProjectCard from "@/components/project-card";
 import ProjectSearch from "@/components/project-search";
 import CategoryFilter from "@/components/category-filter";
 import Pagination from "@/components/pagination";
-import { featuredProjects, allProjectsSorted } from "@/data/projects";
-import type { Category } from "@/data/projects";
+import StructuredData from "@/components/structured-data";
+import { CATEGORY_LABELS } from "@/data/projects";
+import { site } from "@/data/site";
+import { readCatalog, catalogHref, type CatalogParams } from "@/lib/catalog";
+import { catalogStructuredData, pageMetadata } from "@/lib/seo";
 
-const ITEMS_PER_PAGE = 6;
-
-export default function Projects() {
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<Category | "all">("all");
-  const [page, setPage] = useState(1);
-
-  const filteredProjects = useMemo(() => {
-    const query = search.toLowerCase();
-    return allProjectsSorted.filter((p) => {
-      const matchesCategory = category === "all" || p.category === category;
-      const matchesSearch = !query || p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query) || p.technologies.some((t) => t.toLowerCase().includes(query));
-      return matchesCategory && matchesSearch;
-    });
-  }, [search, category]);
-
-  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
-  const paginatedProjects = filteredProjects.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-  const isFiltering = search !== "" || category !== "all";
-
-  const handleCategoryChange = (cat: Category | "all") => { setCategory(cat); setPage(1); };
-  const handleSearchChange = (value: string) => { setSearch(value); setPage(1); };
-
+type PageProps = { searchParams: Promise<CatalogParams> };
+function catalogTitle(catalog: ReturnType<typeof readCatalog>) {
+  const category = catalog.category === "all" ? "Projects" : `${CATEGORY_LABELS[catalog.category]} — Projects`;
+  return `${catalog.query ? `Search: ${catalog.query} — ` : ""}${category}${catalog.page > 1 ? ` — Page ${catalog.page}` : ""} — Farid Matovu`;
+}
+export async function generateMetadata({ searchParams }: PageProps) {
+  const catalog = readCatalog(await searchParams);
+  return {
+    ...pageMetadata({ ...site.pages.projects, title: catalogTitle(catalog), path: catalogHref(catalog) }),
+    ...(catalog.query ? { robots: { index: false, follow: true } } : {}),
+  };
+}
+export default async function Projects({ searchParams }: PageProps) {
+  const catalog = readCatalog(await searchParams);
+  const isFiltering = catalog.query !== "" || catalog.category !== "all";
   return (
     <div className="min-h-screen">
       <Header />
       <main>
-        <PageTransition>
-          <section className="page-hero">
-            <div className="site-shell">
-              <p className="eyebrow eyebrow-light">02 / Project index</p>
-              <h1>Work with a<br />point of view.</h1>
-              <p>Products, platforms, and the systems between them. Start with selected work, then search the wider catalog.</p>
-            </div>
-          </section>
-          <section className="site-shell page-content">
-            {!isFiltering && <div className="project-proof-grid" style={{ marginBottom: "5rem" }}>
-              {featuredProjects.slice(0, 3).map((project, i) => <ProjectCard key={project.id} project={project} index={i} />)}
-            </div>}
-            <div className="filter-bar">
-              <ProjectSearch value={search} onSearchChangeAction={handleSearchChange} />
-              <span className="catalog-note" style={{ margin: 0 }}>{filteredProjects.length} projects in view</span>
-            </div>
-            <CategoryFilter selected={category} onCategoryChangeAction={handleCategoryChange} />
-            <div style={{ marginTop: "1.5rem" }}>
-              {paginatedProjects.length > 0 ? (
-                <div className="index-grid">
-                  {paginatedProjects.map((project, i) => <ProjectCard key={project.id} project={project} index={i} />)}
-                </div>
-              ) : <div className="empty-state">No projects found matching your search.</div>}
-            </div>
-            <Pagination currentPage={page} totalPages={totalPages} onPageChangeAction={setPage} />
-          </section>
-        </PageTransition>
+        <StructuredData data={catalogStructuredData(catalog, catalog.visibleProjects, catalogTitle(catalog), catalog.projects.length)} />
+        <section className="page-hero"><div className="site-shell">
+          <h1>Work with a<br />point of view.</h1>
+          <p>Products, platforms, and the systems between them. Explore the catalog by product, technology, or type of work.</p>
+        </div></section>
+        <section className="site-shell page-content">
+          <div className="filter-bar">
+            <ProjectSearch selection={catalog} />
+            <span className="catalog-note" style={{ margin: 0 }}>{`${catalog.projects.length} project${catalog.projects.length === 1 ? "" : "s"} in view`}</span>
+          </div>
+          <CategoryFilter selection={catalog} />
+          {isFiltering && <Link href="/projects" className="catalog-reset">Clear filters</Link>}
+          <div style={{ marginTop: "1.5rem" }}>
+            {catalog.visibleProjects.length ? <div className="index-grid">{catalog.visibleProjects.map((project) => <ProjectCard key={project.id} project={project} />)}</div> : <div className="empty-state">No projects found matching your search. Try another term or clear the filters.</div>}
+          </div>
+          <Pagination selection={catalog} totalPages={catalog.totalPages} />
+        </section>
       </main>
       <Footer />
     </div>

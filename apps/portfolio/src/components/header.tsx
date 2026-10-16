@@ -19,7 +19,7 @@ export default function Header() {
       <nav className="site-shell site-header-inner" aria-label="Primary navigation">
         <Link href="/" className="brand-lockup" aria-label="Farid Matovu portfolio home">
           <Image className="brand-mark" src="/fidexa-app-icon.svg" alt="" width={32} height={32} priority />
-          <span><span>Fidexa</span><span className="brand-meta">Farid Matovu · Product engineer</span></span>
+          <span><span>Farid Matovu</span><span className="brand-meta">Product engineer · Founder at Fidexa</span></span>
         </Link>
         <ul className="header-nav">
           {links.map(({ href, label }) => {

@@ -1,5 +1,3 @@
-"use client";
-
 import type { LucideIcon } from "lucide-react";
 
 interface CapabilityCardProps {
@@ -15,12 +13,10 @@ export default function CapabilityCard({
   title,
   description,
   tags,
-  index = 0,
 }: CapabilityCardProps) {
   return (
     <article className="capability-card">
       <Icon size={16} aria-hidden="true" />
-      <span className="capability-index">0{index + 1} / {title}</span>
       <h3>{title}</h3>
       <p>{description}</p>
       <div className="tag-row">

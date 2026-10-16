@@ -18,7 +18,17 @@ export interface Project {
   appStoreUrl?: string;
   productUrl?: string;
   imageUrl?: string;
+  imageAlt?: string;
+  story?: {
+    name: string;
+    intro: string;
+    situation: string;
+    decision: string;
+    delivered: string;
+    caption: string;
+  };
   screenshots?: string[];
+  screenshotDescriptions?: string[];
   videoUrl?: string;
   rank: number;
   featured: boolean;
@@ -62,7 +72,17 @@ export const projects: Project[] = [
     appStoreUrl: "https://apps.apple.com/us/app/rishi-reader/id6763041630",
     productUrl: "https://rishi.fidexa.org",
     githubUrl: "https://github.com/matovu-farid/rishi-monorepo",
-    imageUrl: "/screenshots/rishi/app-store-listing.png",
+    imageUrl: "/projects/rishi-showcase-poster.jpg",
+    imageAlt: "Rishi iPhone library showing books in progress, search, and reading navigation",
+    story: {
+      name: "Rishi",
+      intro: "One reading experience, across Apple devices.",
+      situation: "Readers move between books, listening, and questions about what they are reading.",
+      decision: "Keep reading, read-aloud, and AI questions together, with answers grounded in the current book.",
+      delivered: "An EPUB and PDF reading app with highlights, sync, and sharing. Available on the App Store for iPhone, iPad, and Mac.",
+      caption: "Actual Rishi iPhone library, captured from the product walkthrough."
+    },
+    videoUrl: "https://youtu.be/vcWcpEGsof8",
     rank: 1,
     featured: true,
     year: "2026",
@@ -100,8 +120,17 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/matovu-farid/money-lending",
     liveUrl: "https://money-lending.fidexa.org/home",
-    liveLabel: "Production App",
-    imageUrl: "/screenshots/money-lending/landing.png",
+    liveLabel: "Public showcase",
+    imageUrl: "/projects/money-lending-showcase.png",
+    imageAlt: "Kaks Credit public product showcase with a lending dashboard illustration",
+    story: {
+      name: "Kaks Credit",
+      intro: "Lending decisions connected to the ledger.",
+      situation: "A lending business needed loan calculations, investor capital, approvals, and reporting to work together.",
+      decision: "Build around an accounting ledger, with exact decimal arithmetic for reducing-balance interest and payment allocation.",
+      delivered: "A production lending platform with investor capital, risk watchlists, role-based access, approvals, and financial reports.",
+      caption: "Public Kaks Credit showcase with a dashboard illustration. The operational workspace requires sign-in."
+    },
     rank: 1.5,
     featured: true,
     year: "2026",
@@ -139,8 +168,17 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/matovu-farid/inventory",
     liveUrl: "https://inventory.fidexa.org/home",
-    liveLabel: "Production App",
-    imageUrl: "/screenshots/inventory/dashboard.png",
+    liveLabel: "Public showcase",
+    imageUrl: "/projects/inventory-dashboard.png",
+    imageAlt: "Inventory operational dashboard showing supply routes and stock transfers",
+    story: {
+      name: "Inventory",
+      intro: "From procurement to the shop floor.",
+      situation: "An import and retail business needed to connect buying trips, stock movements, and retail sales.",
+      decision: "Connect Supply, Store, and Shop through one double-entry ledger, with RMB, USD, and UGX support.",
+      delivered: "A production trade platform combining point of sale, stock control, loss detection, and audit trails.",
+      caption: "Existing Inventory dashboard capture. The operational workspace requires sign-in."
+    },
     rank: 1.7,
     featured: true,
     year: "2026",
@@ -259,10 +297,8 @@ export const projects: Project[] = [
   {
     id: "apartment-manager",
     title: "Apartment Manager",
-    description:
-      "Full-stack property management app with block management, rent billing cycles, expenditure tracking, and data export — built with Next.js 15 and PostgreSQL.",
-    longDescription:
-      "A full-stack property management application for managing apartment blocks, residents, rent payments, and expenditures. Features role-based access with invitation keys, automatic monthly billing cycles, payment status tracking, CSV/Excel export, and a dashboard with key metrics. Built with Next.js 15, Prisma 6, Better Auth, and Tailwind CSS 4.",
+    description: "Rebuilt rental-operations platform connecting properties, residents, rent billing, daily collections, reconciliation, and monthly reporting.",
+    longDescription: "A rebuilt property-management workspace with blocks, resident history, monthly rent billing, payment receipts, daily collections, collection destinations, reconciliation batches, expenses, savings, audit history, and CSV/Excel reports. Ledger and statement views flag accounting figures as provisional when source reconciliation is pending. The public showcase is open; operational screens require sign-in.",
     category: "web-apps",
     technologies: [
       "Next.js",
@@ -275,29 +311,43 @@ export const projects: Project[] = [
       "Zod",
     ],
     githubUrl: "https://github.com/matovu-farid/apartment_manager_next",
-    imageUrl:
-      "/screenshots/apartment-manager/apartments.png",
+    imageUrl: "/projects/apartment-manager-showcase.png",
+    imageAlt: "Apartment Manager public product showcase with a privacy-blurred apartment overview",
+    story: {
+      name: "Apartment Manager",
+      intro: "Property records meet the daily work of rent.",
+      situation: "Running rentals means keeping apartments, resident history, rent due, collections, and expenses in step.",
+      decision: "Connect daily rent work to collection destinations, reconciliation, and monthly reporting, with accounting status visible.",
+      delivered: "A rebuilt rental workspace with billing, receipts, expenses, savings, exports, and audit history. Unreconciled accounting figures remain explicitly provisional.",
+      caption: "Deployed public showcase. Identifying values in the embedded overview are privacy-blurred by the product site."
+    },
     screenshots: [
-      "/screenshots/apartment-manager/apartments.png",
-      "/screenshots/apartment-manager/payments.png",
+      "/projects/apartment-manager-daily-rent.png",
+      "/projects/apartment-manager-reports.png",
+    ],
+    screenshotDescriptions: [
+      "Daily collections with day, block, and destination filters. This privacy-safe capture shows a day with no recorded payments.",
+      "Monthly report controls with Kampala month, block filters, and CSV/Excel export. Private records and financial totals are outside this capture.",
     ],
     rank: 6,
     featured: true,
-    year: "2025",
+    year: "2026",
+    liveUrl: "https://apartment.fidexa.org/home",
+    liveLabel: "Public showcase",
     rebuiltFrom: {
       title: "Apartment Manager (Rails)",
       tech: "Ruby on Rails",
       reason:
         "The original Rails version was a learning project — it taught me the property management domain. The Next.js rebuild is the real product: proper auth with email verification, automatic billing cycles, role-based access via invitation keys, and CSV/Excel export.",
     },
-    narrative:
-      "I rebuilt the apartment manager from scratch in Next.js to create a production-grade property management tool. The original Rails version taught me the domain — this version is the real product, with proper auth, billing cycles, role-based access, and data export.",
+    narrative: "I rebuilt Apartment Manager around the daily work of rental operations: keeping apartments and resident history together, billing rent, recording receipts, and following collections through to deposits. Daily collections and rent-due views use Kampala dates. Monthly reports support CSV and Excel export. The accounting workspace makes reconciliation status explicit: figures stay provisional until their source records have been reconciled.",
     keyDecisions: [
       "Next.js 15 App Router with server actions for mutations and cached queries for reads",
       "Better Auth for email/password auth with verification and password reset flows",
       "Automatic monthly rent billing cycles with paid/partial/overdue status tracking",
       "Role-based block access with admin and viewer roles via invitation keys",
-      "CSV and Excel export for residents, payments, and expenditures",
+      "Daily collection and rent-due views use Kampala dates, with destinations and reconciliation batches connecting payments to deposits",
+      "CSV and Excel monthly reports, with provisional accounting figures explicitly identified until source reconciliation is complete",
     ],
   },
   {
@@ -464,3 +514,7 @@ export const allProjectsSorted = projects
   .sort(
   (a, b) => a.rank - b.rank
   );
+
+// Homepage stories are curated independently of the broader featured catalog.
+export const homepageProjects = ["rishi", "money-lending", "inventory-trade", "apartment-manager"]
+  .map((id) => projects.find((project) => project.id === id)!);

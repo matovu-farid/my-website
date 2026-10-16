@@ -26,17 +26,19 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
             <p className="case-study-label">Product evidence</p>
             {project.imageUrl ? (
               <div className="case-study-media">
-                <img src={project.imageUrl} alt={project.title + " product interface preview"} width={1021} height={657} />
+                <img src={project.imageUrl} alt={project.imageAlt ?? project.title + " product interface preview"} width={1021} height={657} />
               </div>
             ) : (
               <div className="case-study-media"><span className="project-card-media-placeholder" aria-hidden="true">{project.title[0]}</span></div>
             )}
 
+            {project.story && <p className="media-provenance">{project.story.caption}</p>}
+
             {project.screenshots && project.screenshots.length > 1 && (
               <>
                 <p className="case-study-label">Additional screens</p>
-                <div className="detail-layout">
-                  {project.screenshots.map((src, index) => <div className="case-study-media" key={src}><img src={src} alt={project.title + " screen " + (index + 1)} width={1021} height={657} loading="lazy" /></div>)}
+                <div className="evidence-captures">
+                  {project.screenshots.map((src, index) => <figure key={src}><img src={src} alt={project.screenshotDescriptions?.[index] ?? project.title + " screen " + (index + 1)} width={index === 0 ? 1184 : 1168} height={index === 0 ? 539 : 172} loading="lazy" />{project.screenshotDescriptions?.[index] && <figcaption className="media-provenance">{project.screenshotDescriptions[index]}</figcaption>}</figure>)}
                 </div>
               </>
             )}
@@ -72,11 +74,9 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
           </article>
 
           <aside className="case-study-aside">
-            <p className="eyebrow">Route matrix</p>
-            <h2>Selected case studies.</h2>
+                        <h2>Selected case studies.</h2>
             <ul className="route-list">{allProjectsSorted.filter((p) => p.narrative).slice(0, 8).map((route) => <li key={route.id}><Link href={"/projects/" + route.id}>{route.title}</Link></li>)}</ul>
-            <p className="case-study-label">Anatomy</p>
-            <p style={{ color: "var(--slate)", fontSize: ".76rem", lineHeight: 1.6 }}>Context · evidence · narrative<br />Decisions · links · next step</p>
+
           </aside>
       </main>
       <Footer />

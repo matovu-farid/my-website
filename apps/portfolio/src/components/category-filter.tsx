@@ -1,39 +1,16 @@
-"use client";
+import Link from "next/link";
+import { CATEGORY_LABELS, type Category } from "@/data/projects";
+import { catalogHref, type CatalogSelection } from "@/lib/catalog";
 
-import type { Category } from "@/data/projects";
-import { CATEGORY_LABELS } from "@/data/projects";
-
-interface CategoryFilterProps {
-  selected: Category | "all";
-  onCategoryChangeAction: (category: Category | "all") => void;
-}
-
-const categories: (Category | "all")[] = [
-  "all",
-  "ai-automation",
-  "native-apps",
-  "cross-platform",
-  "web-apps",
-  "dev-tools",
-];
-
-export default function CategoryFilter({
-  selected,
-  onCategoryChangeAction,
-}: CategoryFilterProps) {
+export default function CategoryFilter({ selection }: { selection: CatalogSelection }) {
+  const categories: (Category | "all")[] = ["all", ...Object.keys(CATEGORY_LABELS) as Category[]];
   return (
-    <div className="filter-pills">
-      {categories.map((cat) => (
-        <button
-          key={cat}
-          type="button"
-          onClick={() => onCategoryChangeAction(cat)}
-          className="filter-pill"
-          data-active={selected === cat}
-        >
-          {cat === "all" ? "All" : CATEGORY_LABELS[cat]}
-        </button>
+    <nav className="filter-pills" aria-label="Project categories">
+      {categories.map((category) => (
+        <Link key={category} href={catalogHref({ category, query: selection.query })} className="filter-pill" data-active={selection.category === category} aria-current={selection.category === category ? "true" : undefined}>
+          {category === "all" ? "All" : CATEGORY_LABELS[category]}
+        </Link>
       ))}
-    </div>
+    </nav>
   );
 }
