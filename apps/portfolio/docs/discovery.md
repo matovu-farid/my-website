@@ -114,3 +114,22 @@ Final evidence (temporary local outputs):
 - `/private/tmp/portfolio-crawler-policy-final-audit.json`: 14 client-policy assertions.
 - `/private/tmp/portfolio-apex-domain-alignment.jpg`: Vercel apex Production / www 308 configuration.
 - `/private/tmp/portfolio-claude-user-rule-active.jpg` and `/private/tmp/portfolio-claude-user-unblocked.jpg`: active replacement rule and cleared inherited block.
+
+
+## Webmaster ownership and sitemap submission — 16 October 2026
+
+The canonical HTTPS portfolio is verified in both services using permanent HTML ownership tags emitted by `src/app/layout.tsx` through Next.js metadata. Google uses the URL-prefix property `https://matovu-farid.com/`; this does not establish a DNS Domain property covering every subdomain or protocol. Bing uses the same canonical site URL. Keep both `google-site-verification` and `msvalidate.01` tags in the server-rendered head to retain ownership verification.
+
+| Service | Ownership result | Submitted sitemap | Observed result |
+| --- | --- | --- | --- |
+| Google Search Console | Ownership verified using HTML tag | `https://matovu-farid.com/sitemap.xml` | Success; 11 discovered pages, 0 discovered videos |
+| Bing Webmaster Tools | HTML meta-tag verification accepted; verified site dashboard accessible | `https://matovu-farid.com/sitemap.xml` | Submitted; Processing, with no last crawl or discovered URL count yet |
+
+The live sitemap returned 200 directly on the apex and contained exactly 11 canonical HTTPS URLs before submission. Both exact ownership tags were checked once in the initial production HTML head. TypeScript passed, and Vercel marked metadata commit `d935ca6` Ready on Production. No DNS records or DNS-account access grants were needed. Discovered sitemap URLs and accepted submissions are not proof that the pages have been indexed or will rank.
+
+Open the service reports:
+
+- [Google portfolio sitemaps](https://search.google.com/search-console/sitemaps?resource_id=https%3A%2F%2Fmatovu-farid.com%2F)
+- [Bing portfolio sitemaps](https://www.bing.com/webmasters/sitemaps?siteUrl=https%3A%2F%2Fmatovu-farid.com%2F)
+
+Temporary local evidence: `/private/tmp/portfolio-webmaster-live-tags.json`, `/private/tmp/portfolio-google-ownership-verified.jpg`, `/private/tmp/portfolio-google-sitemap-success.jpg`, and `/private/tmp/portfolio-bing-sitemap-submitted.jpg`.
