@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   ...pageMetadata(site.pages.home),
   applicationName: "Farid Matovu Portfolio",
+  verification: {
+    google: "bTBFEwGrxsDFxs7EtUBa3ZtS-ftB_ynhsKQangb7fXY",
+    other: {
+      "msvalidate.01": "F3CA30D9E0BCF463C458546E8C9773E3",
+    },
+  },
 };
 
 export default function RootLayout({
