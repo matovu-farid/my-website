@@ -1,6 +1,5 @@
-"use client";
-
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight, Code, ExternalLink, RefreshCw } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -29,7 +28,7 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="site-shell case-study-shell">
+      <main id="main-content" tabIndex={-1} className="site-shell case-study-shell">
           <article className="case-study-main">
             <Link href="/projects" className="eyebrow">← Back to index</Link>
             <p className="case-study-meta" style={{ marginTop: "2rem" }}>{CATEGORY_LABELS[project.category]} {project.year ? "· " + project.year : ""}</p>
@@ -46,7 +45,7 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
             <p className="case-study-label">Product evidence</p>
             {project.imageUrl ? (
               <div className="case-study-media">
-                <img src={project.imageUrl} alt={project.imageAlt ?? project.title + " product interface preview"} width={1021} height={657} />
+                <Image src={project.imageUrl} alt={project.imageAlt ?? project.title + " product interface preview"} fill sizes={project.id === "rishi" ? "(max-width: 620px) 100px, (max-width: 900px) 220px, 250px" : "(max-width: 620px) calc(100vw - 80px), (max-width: 900px) 84vw, (max-width: 1264px) 62vw, 788px"} priority />
               </div>
             ) : (
               <div className="case-study-media"><span className="project-card-media-placeholder" aria-hidden="true">{project.title[0]}</span></div>
@@ -59,7 +58,7 @@ export default function CaseStudyContent({ project, prevProject, nextProject }: 
               <>
                 <p className="case-study-label">Additional screens</p>
                 <div className="evidence-captures">
-                  {project.screenshots.map((src, index) => <figure key={src}><img src={src} alt={project.screenshotDescriptions?.[index] ?? project.title + " screen " + (index + 1)} width={index === 0 ? 1184 : 1168} height={index === 0 ? 539 : 172} loading="lazy" />{project.screenshotDescriptions?.[index] && <figcaption className="media-provenance">{project.screenshotDescriptions[index]}</figcaption>}</figure>)}
+                  {project.screenshots.map((src, index) => <figure key={src}><Image src={src} alt={project.screenshotDescriptions?.[index] ?? project.title + " screen " + (index + 1)} width={index === 0 ? 1184 : 1168} height={index === 0 ? 539 : 172} sizes="(max-width: 620px) calc(100vw - 80px), (max-width: 900px) 84vw, (max-width: 1264px) 62vw, 788px" loading="lazy" />{project.screenshotDescriptions?.[index] && <figcaption className="media-provenance">{project.screenshotDescriptions[index]}</figcaption>}</figure>)}
                 </div>
               </>
             )}

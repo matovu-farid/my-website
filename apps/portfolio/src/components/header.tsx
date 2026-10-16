@@ -16,6 +16,7 @@ export default function Header() {
 
   return (
     <header className="site-header">
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <nav className="site-shell site-header-inner" aria-label="Primary navigation">
         <Link href="/" className="brand-lockup" aria-label="Farid Matovu portfolio home">
           <Image className="brand-mark" src="/fidexa-app-icon.svg" alt="" width={32} height={32} priority />

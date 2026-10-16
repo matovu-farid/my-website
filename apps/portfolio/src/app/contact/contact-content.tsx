@@ -14,15 +14,29 @@ export default function Contact() {
   const [formStatus, setFormStatus] = useState<{ success?: boolean; message?: string } | null>(null);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const successDialogRef = useRef<HTMLDialogElement>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const formStatusRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => setIsReady(true), []);
+
+  useEffect(() => {
+    if (formStatus) formStatusRef.current?.focus();
+  }, [formStatus]);
 
   useEffect(() => {
     if (!isSuccessOpen) return;
 
     const dialog = successDialogRef.current;
-    // Native modal focus containment, Escape dismissal, and focus restoration.
+    const submitButton = submitButtonRef.current;
+    // Native modal focus containment and Escape dismissal. The submit button
+    // was disabled during delivery, so restore focus explicitly after closing.
     dialog?.showModal();
-    return () => dialog?.close();
+    return () => {
+      dialog?.close();
+      submitButton?.focus();
+    };
   }, [isSuccessOpen]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,7 +66,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen">
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <section className="page-hero">
           <div className="site-shell">
             <h1>Let&apos;s talk about<br />your next hire.</h1>
@@ -73,16 +87,17 @@ export default function Contact() {
                   <li><a href={site.resumePath} download>Download résumé (PDF)</a></li>
                 </ul>
               </div>
-              <form className="contact-form" onSubmit={handleSubmit} aria-labelledby="contact-form-title">
+              <form method="post" className="contact-form" onSubmit={handleSubmit} aria-labelledby="contact-form-title">
                 <h2 id="contact-form-title">Send a message</h2>
                 <p className="form-help" id="contact-form-help">All fields are required. A short introduction is enough.</p>
+                <noscript><p className="form-help">To send a message without JavaScript, use the email link above.</p></noscript>
                 <div className="form-grid">
                   <div className="form-field"><label htmlFor="name">Name</label><input type="text" id="name" name="name" autoComplete="name" disabled={isSubmitting} required /></div>
-                  <div className="form-field"><label htmlFor="email">Email</label><input type="email" id="email" name="email" autoComplete="email" disabled={isSubmitting} required /></div>
+                  <div className="form-field"><label htmlFor="email">Email</label><input type="email" id="email" name="email" autoComplete="email" spellCheck={false} disabled={isSubmitting} required /></div>
                   <div className="form-field form-field-wide"><label htmlFor="message">Role or project details</label><textarea id="message" name="message" aria-describedby="contact-form-help" disabled={isSubmitting} required /></div>
                 </div>
-                <button type="submit" className="button-primary form-submit" disabled={isSubmitting} aria-busy={isSubmitting}><Send size={14} aria-hidden="true" /> {isSubmitting ? "Sending…" : "Send message"}</button>
-                {formStatus && <p className="form-status" role="alert">{formStatus.message}</p>}
+                <button ref={submitButtonRef} type="submit" className="button-primary form-submit" disabled={!isReady || isSubmitting} aria-busy={!isReady || isSubmitting}><Send size={14} aria-hidden="true" /> {!isReady ? "Preparing form…" : isSubmitting ? "Sending…" : "Send message"}</button>
+                {formStatus && <p ref={formStatusRef} tabIndex={-1} className="form-status" role="alert">{formStatus.message}</p>}
               </form>
             </div>
           </PageTransition>

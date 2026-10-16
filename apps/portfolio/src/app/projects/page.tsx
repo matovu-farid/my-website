@@ -29,7 +29,7 @@ export default async function Projects({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen">
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <StructuredData data={catalogStructuredData(catalog, catalog.visibleProjects, catalogTitle(catalog), catalog.projects.length)} />
         <section className="page-hero"><div className="site-shell">
           <h1>Work with a<br />point of view.</h1>

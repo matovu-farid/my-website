@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ExternalLink, Code, ArrowRight } from "lucide-react";
 import type { Project } from "@/data/projects";
 import { CATEGORY_LABELS } from "@/data/projects";
@@ -16,19 +17,25 @@ export default function ProjectCard({
   const story = featured ? project.story : undefined;
   const Heading = featured ? "h3" : "h2";
   const hasNarrative = Boolean(project.narrative);
+  const isPhone = project.id === "rishi";
+  // Phone screenshots occupy a narrow part of the contain frame.
+  const imageSizes = isPhone
+    ? featured ? "(max-width: 620px) 149px, 204px" : "(max-width: 620px) 114px, 123px"
+    : featured
+      ? "(max-width: 620px) calc(100vw - 64px), (max-width: 1264px) 44vw, 536px"
+      : "(max-width: 620px) calc(100vw - 32px), (max-width: 900px) calc(50vw - 32px), (max-width: 1264px) calc(33vw - 32px), 389px";
 
   return (
     <article id={`project-${project.id}`} className={`project-card ${featured ? "project-card--story" : ""}`}>
       {project.imageUrl ? (
         <figure className={`project-card-media ${project.id === "rishi" ? "project-card-media--phone" : ""}`}>
-          <img
+          <div className="project-card-image-frame"><Image
             src={project.imageUrl}
             alt={project.imageAlt ?? `${project.title} product interface preview`}
-            width={1021}
-            height={657}
+            fill
+            sizes={imageSizes}
             loading="lazy"
-            decoding="async"
-          />
+          /></div>
           {story && <figcaption>{story.caption}</figcaption>}
         </figure>
       ) : (
@@ -54,8 +61,9 @@ export default function ProjectCard({
           {hasNarrative && (
             <Link
               href={`/projects/${project.id}`}
+              aria-label={`Case study: ${project.title}`}
             >
-              Case study <ArrowRight size={12} />
+              Case study <ArrowRight size={12} aria-hidden="true" />
             </Link>
           )}
           {project.githubUrl && (
@@ -65,40 +73,43 @@ export default function ProjectCard({
               rel="noopener noreferrer"
               aria-label={`${project.title} source code`}
             >
-              <Code size={16} />
+              <Code size={16} aria-hidden="true" />
               Source
             </a>
           )}
           {project.appStoreUrl && (
             <a
               href={project.appStoreUrl}
+              aria-label={`App Store: ${project.title}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <ExternalLink size={16} />
+              <ExternalLink size={16} aria-hidden="true" />
               App Store
             </a>
           )}
           {project.productUrl && (
             <a
               href={project.productUrl}
+              aria-label={`Product site: ${project.title}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <ExternalLink size={16} />
+              <ExternalLink size={16} aria-hidden="true" />
               Product Site
             </a>
           )}
           {project.videoUrl && (
-            <a href={project.videoUrl} target="_blank" rel="noopener noreferrer">Walkthrough <ExternalLink size={14} aria-hidden="true" /></a>
+            <a href={project.videoUrl} aria-label={`Walkthrough: ${project.title}`} target="_blank" rel="noopener noreferrer">Walkthrough <ExternalLink size={14} aria-hidden="true" /></a>
           )}
           {project.liveUrl && (
             <a
               href={project.liveUrl}
+              aria-label={`${project.liveLabel ?? "Live"}: ${project.title}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <ExternalLink size={16} />
+              <ExternalLink size={16} aria-hidden="true" />
               {project.liveLabel ?? "Live"}
             </a>
           )}

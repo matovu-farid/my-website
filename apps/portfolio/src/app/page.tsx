@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <StructuredData data={pageStructuredData(site.pages.home, "ProfilePage")} />
         <section className="hero-panel">
           <div className="site-shell hero-inner">
@@ -38,8 +38,8 @@ export default function Home() {
                 <a href="/Farid-Matovu-Resume.pdf" className="button-secondary" download aria-label="Download Farid Matovu's resume as a PDF">Download résumé <ArrowDown size={14} aria-hidden="true" /></a>
               </div>
             </div>
-            <Link href="/projects/rishi" className="hero-product" aria-label="Explore Rishi, my Apple reading app">
-              <div className="hero-product-image"><Image src="/projects/rishi-showcase-poster.jpg" alt="Rishi iPhone library with books in progress and reading navigation" width={660} height={1310} priority /></div>
+            <Link href="/projects/rishi" className="hero-product" aria-label="Case study: Rishi">
+              <div className="hero-product-image"><Image src="/projects/rishi-showcase-poster.jpg" alt="Rishi iPhone library with books in progress and reading navigation" width={660} height={1310} sizes="(max-width: 620px) 117px, (max-width: 900px) 127px, 138px" priority /></div>
               <div className="hero-product-caption"><div><strong>Rishi</strong><span>Read, listen, and return to your books.</span></div><ArrowRight size={20} aria-hidden="true" /></div>
               <span className="hero-product-note">Shipped on the App Store · iPhone, iPad & Mac</span>
             </Link>
