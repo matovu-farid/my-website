@@ -1,8 +1,9 @@
 # Portfolio engagement analytics
 
 Production destination configured on 16 October 2026: the existing US PostHog
-project used by Fidexa. Every event carries `site=portfolio` so portfolio reporting
-can be filtered independently. The public ingestion token cannot read analytics
+**Default project** (623765), also used by Fidexa. Every event carries
+`site=portfolio` so portfolio reporting can be filtered independently.
+The public ingestion token cannot read analytics
 or administer the project. No additional paid plan was enabled.
 
 | Event | Meaning | Breakdown properties |
@@ -19,12 +20,17 @@ duplicate React effect executions; returning after another route counts again.
 
 ## Reporting
 
-Sign in to [PostHog US](https://us.posthog.com/) and select the existing Fidexa
-project. In Product analytics, create a Trends insight with the three event names
-above, **Total count**, and an event-property filter **`site` equals `portfolio`**.
-For individual views, break down `case_study_view` by `project_id`,
-`contact_click` by `channel`, and `resume_download` by `page` or `placement`.
-Use the same site filter in all portfolio reports.
+Open the saved [Portfolio engagement dashboard](https://us.posthog.com/project/623765/dashboard/2219363).
+Its four charts use **Total count**, the last 30 days, and an event-property filter
+**`site` equals `portfolio`**:
+
+- Daily engagement across all three events.
+- Case-study views by `project_id`.
+- Résumé download clicks by `placement`.
+- Contact clicks by `channel`.
+
+All charts use native Trends queries. Dates follow the project's UTC timezone.
+Use the same site filter when adding portfolio reports to this shared project.
 
 The setup verification event `portfolio_analytics_smoke_test` has
 `environment=verification`; it is separate from the engagement events. Browser
@@ -74,5 +80,11 @@ Also run TypeScript, lint, the design contract, and the discovery/quality HTTP
 regression suites. The latter accept `PORTFOLIO_AUDIT_URL` for production checks.
 To check browser delivery, navigate directly to a case study, follow a Contact
 link, and activate a résumé download; inspect PostHog Activity with the site filter.
-Dashboard verification requires signing into PostHog; ingestion acceptance alone
-does not prove that an insight has been saved or that every event is stored.
+
+Verified in the authenticated PostHog project on 16 October 2026: all three event
+names and their expected properties are present. The saved dashboard's four
+queries return data without warnings. Initial release verification recorded one
+`case_study_view` for `rishi`, one `resume_download` from the contact page, and one
+`contact_click` with channel `contact_page`. These are QA actions, not evidence of
+organic visitor engagement. The separate smoke-test event is excluded from all
+four charts by their event-name selections.
